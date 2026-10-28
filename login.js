@@ -1,0 +1,240 @@
+// --- WebMakers Professional Login Suite (Fixed & Mastered) ---
+
+const SUPABASE_URL = 'https://vjntfjbzjdzdqsdbwprc.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqbnRmamJ6amR6ZHFzZGJ3cHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMzQ1NTgsImV4cCI6MjEwMjkxMDU1OH0.6c2f0vRaMEacTSC-e3E1bh_b2r0hhiRQpLImED4yz9I';
+
+let supabaseClient;
+const MAX_ATTEMPTS = 5;
+
+document.addEventListener('DOMContentLoaded', initLoginSystem);
+
+async function initLoginSystem() {
+    // 1. Initialize Supabase
+    if (typeof supabase !== 'undefined') {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+        showToast("خطأ في تحميل النظام", "System loading error", "error");
+        return;
+    }
+
+    // 2. Event Listeners
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) loginForm.addEventListener('submit', handleLoginAction);
+
+    const langBtn = document.getElementById('adminLangBtn');
+    if (langBtn) langBtn.addEventListener('click', toggleLanguage);
+
+    const togglePass = document.getElementById('togglePassword');
+    if (togglePass) togglePass.addEventListener('click', handlePasswordVisibility);
+
+    const forgotBtn = document.querySelector('.forgot-pass');
+    if (forgotBtn) forgotBtn.addEventListener('click', openResetModal);
+
+    const cancelReset = document.getElementById('cancelReset');
+    if (cancelReset) cancelReset.addEventListener('click', () => { document.getElementById('reset-modal').style.display = 'none'; });
+
+    const confirmReset = document.getElementById('confirmReset');
+    if (confirmReset) confirmReset.addEventListener('click', handleResetPassword);
+
+    // 3. Clear errors on input
+    document.querySelectorAll('.form-group input').forEach(input => {
+        input.addEventListener('input', () => {
+            const errBox = document.getElementById('login-error');
+            if (errBox) errBox.classList.remove('show');
+        });
+    });
+
+    // 4. Initial Load
+    const savedLang = localStorage.getItem('adminLang') || 'ar';
+    applyLanguage(savedLang);
+    checkCurrentSession();
+}
+
+async function handleLoginAction(e) {
+    e.preventDefault();
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const remember = document.getElementById('remember').checked;
+    const loginBtn = document.getElementById('login-btn');
+    const lang = document.documentElement.getAttribute('lang') || 'ar';
+    const isAr = lang === 'ar';
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    // --- Mastery Validation ---
+    if (!email) {
+        showToast("يرجى إدخال البريد الإلكتروني.", "Please enter your email.", "error");
+        emailInput.focus();
+        return;
+    }
+    if (!emailInput.checkValidity()) {
+        showToast("يرجى إدخال بريد إلكتروني صحيح.", "Please enter a valid email.", "error");
+        emailInput.focus();
+        return;
+    }
+    if (!password) {
+        showToast("يرجى إدخال كلمة المرور.", "Please enter your password.", "error");
+        passwordInput.focus();
+        return;
+    }
+
+    if (isLockedOut()) {
+        const remaining = getRemainingLockoutTime();
+        showToast(`محاولات محظورة. انتظر ${remaining} ثانية.`, `Lockout active. Wait ${remaining}s.`, 'error');
+        return;
+    }
+
+    // UI Feedback
+    loginBtn.disabled = true;
+    const originalText = isAr ? "تسجيل الدخول" : "Sign In";
+    loginBtn.textContent = isAr ? 'جاري التحقق...' : 'Checking...';
+
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            recordFailure();
+            displayLoginError(lang);
+            loginBtn.disabled = false;
+            loginBtn.textContent = originalText;
+        } else {
+            clearFailures();
+            localStorage.setItem('admin_remember_me', remember ? 'true' : 'false');
+            sessionStorage.setItem('admin_session_active', 'true');
+            showToast("تم تسجيل الدخول بنجاح!", "Login successful!", "success");
+            setTimeout(() => window.location.href = 'dashboard.html', 800);
+        }
+    } catch (err) {
+        showToast("حدث خطأ غير متوقع.", "Unexpected error occurred.", "error");
+        loginBtn.disabled = false;
+        loginBtn.textContent = originalText;
+    }
+}
+
+function displayLoginError(lang) {
+    const errBox = document.getElementById('login-error');
+    if (!errBox) return;
+    errBox.classList.add('show');
+    errBox.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <span class="err-txt"></span>`;
+    errBox.setAttribute('data-ar', "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
+    errBox.setAttribute('data-en', "Invalid email or password.");
+    const span = errBox.querySelector('.err-txt');
+    span.textContent = lang === 'ar' ? errBox.getAttribute('data-ar') : errBox.getAttribute('data-en');
+}
+
+function toggleLanguage(e) {
+    e.preventDefault();
+    const card = document.querySelector('.login-card');
+    const current = document.documentElement.getAttribute('lang') || 'ar';
+    const next = current === 'ar' ? 'en' : 'ar';
+    if (card) card.classList.add('switching');
+    setTimeout(() => {
+        applyLanguage(next);
+        if (card) card.classList.remove('switching');
+    }, 400);
+}
+
+function applyLanguage(lang) {
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.body.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    localStorage.setItem('adminLang', lang);
+    const langBtn = document.getElementById('adminLangBtn');
+    if (langBtn) langBtn.querySelector('span').textContent = lang === 'ar' ? 'EN' : 'AR';
+
+    document.querySelectorAll('[data-ar]').forEach(el => {
+        const text = el.getAttribute(`data-${lang}`);
+        if (!text) return;
+        if (el.tagName === 'INPUT') el.placeholder = text;
+        else {
+            const span = el.querySelector('.err-txt') || el.querySelector('span') || el;
+            span.textContent = text;
+        }
+    });
+
+    document.querySelectorAll('.toast').forEach(t => {
+        const msg = t.getAttribute(`data-${lang}`);
+        if (msg && t.querySelector('span')) t.querySelector('span').textContent = msg;
+    });
+}
+
+function handlePasswordVisibility() {
+    const input = document.getElementById('password');
+    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+    input.setAttribute('type', type);
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+}
+
+async function handleResetPassword() {
+    const email = document.getElementById('reset-email').value.trim();
+    const lang = document.documentElement.getAttribute('lang') || 'ar';
+    if (!email || !email.includes('@')) {
+        showToast("بريد إلكتروني غير صحيح.", "Invalid email.", "error");
+        return;
+    }
+    const btn = document.getElementById('confirmReset');
+    btn.disabled = true;
+    const oldT = btn.textContent;
+    btn.textContent = lang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
+    if (error) showToast("خطأ في الإرسال", "Error sending link", "error");
+    else {
+        showToast("تم إرسال الرابط بنجاح!", "Link sent successfully!", "success");
+        document.getElementById('reset-modal').style.display = 'none';
+    }
+    btn.disabled = false;
+    btn.textContent = oldT;
+}
+
+function openResetModal(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    if (email) document.getElementById('reset-email').value = email;
+    document.getElementById('reset-modal').style.display = 'flex';
+}
+
+function showToast(ar, en, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const lang = document.documentElement.getAttribute('lang') || 'ar';
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.setAttribute('data-ar', ar);
+    toast.setAttribute('data-en', en);
+    const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+    toast.innerHTML = `<i class="fas ${icon}"></i> <span>${lang === 'ar' ? ar : en}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.classList.add('hiding'); setTimeout(() => toast.remove(), 400); }, 4000);
+}
+
+function recordFailure() {
+    let fails = parseInt(localStorage.getItem('admin_fails') || '0') + 1;
+    localStorage.setItem('admin_fails', fails);
+    if (fails >= MAX_ATTEMPTS) localStorage.setItem('admin_lock_until', Date.now() + 60000);
+}
+
+function isLockedOut() {
+    return Date.now() < parseInt(localStorage.getItem('admin_lock_until') || '0');
+}
+
+function getRemainingLockoutTime() {
+    const lock = parseInt(localStorage.getItem('admin_lock_until') || '0');
+    return Math.ceil((lock - Date.now()) / 1000);
+}
+
+function clearFailures() {
+    localStorage.removeItem('admin_fails');
+    localStorage.removeItem('admin_lock_until');
+}
+
+async function checkCurrentSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+        const remember = localStorage.getItem('admin_remember_me') === 'true';
+        const active = sessionStorage.getItem('admin_session_active') === 'true';
+        if (remember || active) window.location.href = 'dashboard.html';
+        else await supabaseClient.auth.signOut();
+    }
+}

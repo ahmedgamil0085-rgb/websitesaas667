@@ -1,0 +1,154 @@
+/*
+   WebMakers Luxury Restaurant - Masterpiece Admin & Dashboard Theme Controller
+   =============================================================================
+   ثيم الأزرق البلاتيني الملكي المطور بكود التدرج الزجاجي (Modern Gradient Canvas)
+   تغيير القيمة أو تبديل الوضع يؤثر فوراً على كل من:
+   1. صفحة تسجيل الدخول (login.html)
+   2. لوحة التحكم الرئيسية (dashboard.html)
+   3. مركز المساعدة (help.html)
+   4. سياسة الخصوصية (privacy.html)
+   =============================================================================
+*/
+
+/* 1. DARK MODE (ثيم الأزرق البلاتيني الداكن الملكي - Dark Platinum Blue Canvas) */
+:root, [data-theme="dark"] {
+    /* ==========================================
+       1. BRAND PRIMARY & PLATINUM BLUE COLORS
+       ========================================== */
+    --admin-primary: #38bdf8;           /* الأزرق البلاتيني الملكي المضيء */
+    --primary-color: #38bdf8;
+    --primary-gold: #38bdf8;            /* المرجع التوافقي للون الرئيسي */
+    --primary-hover: #7dd3fc;           /* البلاتيني الثلجي المضيء عند التحويم */
+    --gold-dark: #0284c7;               /* الأزرق الياقوتي الكرومي العميق */
+    --admin-primary-rgb: 56, 189, 248;  /* قيم RGB للظلال الفضية والبلاتينية */
+
+    /* ==========================================
+       2. STATUS & ACCENT COLORS
+       ========================================== */
+    --accent-red: #f43f5e;              /* لون التنبيهات والأخطاء والإلغاء */
+    --accent-green: #10b981;            /* لون النجاح والتأكيد والعمليات النشطة */
+    --accent-gold: #38bdf8;             /* لون التميز والبادجات */
+
+    /* ==========================================
+       3. MODERN GRADIENT CANVAS & SURFACES (التدرج الزجاجي الداكن بدون صور)
+       ========================================== */
+    --bg-deep: #070f1e;                 /* خلفية الليل الكحلي البلاتيني العميق */
+    --bg-dark: #0c192e;                 /* خلفية الصفحة البلاتينية الداكنة */
+    --bg-darker: #040814;
+    --bg-gradient: radial-gradient(circle at 80% 20%, #0e274c 0%, #070f1e 60%, #030712 100%);
+    --bg-sidebar: #13233d;              /* خلفية القائمة الجانبية Sidebar */
+    --bg-card: #13233d;                 /* خلفية بطاقات الإحصائيات والمعلومات */
+    --bg-card-glass: rgba(19, 35, 61, 0.95); /* خلفية الكروت الزجاجية */
+    --bg-input: #1c3252;                /* خلفية الحقول والمدخلات */
+
+    /* ==========================================
+       4. TYPOGRAPHY & TEXT
+       ========================================== */
+    --text-main: #f0f7ff;               /* النص الأبيض الثلجي المريح للعين */
+    --text-white: #ffffff;
+    --text-muted: #94a3b8;              /* النص الفرعي الخافت */
+    --text-dim: #94a3b8;
+
+    /* ==========================================
+       5. BORDERS & GLASS EFFECTS
+       ========================================== */
+    --glass-border: rgba(56, 189, 248, 0.25);  /* الإطار البلاتيني الزجاجي */
+    --border-subtle: rgba(255, 255, 255, 0.1);  /* الحدود الخفيفة */
+    --border-input: #28446b;                    /* حدود الحقول والمدخلات */
+
+    /* ==========================================
+       6. TRANSITIONS & MICRO-INTERACTIONS (الحركات التفاعلية السلسة)
+       ========================================== */
+    --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-card: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.1);
+    --shadow-hover: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.25);
+}
+
+/* 2. LIGHT MODE (تدرج النهار الثلجي الأبيض والأزرق البلاتيني النقي) */
+[data-theme="light"], body.light-mode {
+    /* ==========================================
+       1. BRAND PRIMARY & BLUE ACCENT COLORS
+       ========================================== */
+    --admin-primary: #0284c7;           /* الأزرق البلاتيني الناصع */
+    --primary-color: #0284c7;
+    --primary-gold: #0284c7;
+    --primary-hover: #0369a1;           /* أزرق ياقوتي داكن عند التحويم */
+    --gold-dark: #075985;
+    --admin-primary-rgb: 2, 132, 199;
+
+    /* ==========================================
+       2. STATUS & ACCENT COLORS
+       ========================================== */
+    --accent-red: #e11d48;
+    --accent-green: #059669;
+    --accent-gold: #0284c7;
+
+    /* ==========================================
+       3. BACKGROUNDS & GRADIENTS (الخلفية المتدرجة البيضاء الناصعة)
+       ========================================== */
+    --bg-deep: #f0f6ff;                 /* خلفية ناصعة مائلة للثلجي المريح */
+    --bg-dark: #ffffff;                 /* الأبيض النقي */
+    --bg-darker: #e0f2fe;
+    --bg-gradient: radial-gradient(circle at 80% 15%, #e0f2fe 0%, #f0f6ff 50%, #f8fafc 100%);
+    --bg-sidebar: #ffffff;              /* السايدبار الأبيض */
+    --bg-card: #ffffff;                 /* البطاقات والكروت البيضاء */
+    --bg-card-glass: rgba(255, 255, 255, 0.98); /* الكروت الزجاجية البيضاء */
+    --bg-input: #f0f7ff;                /* مدخلات النصوص الفاتحة الثلجية */
+
+    /* ==========================================
+       4. TYPOGRAPHY & TEXT
+       ========================================== */
+    --text-main: #031b33;               /* النص الكحلي الداكن جداً والواضح */
+    --text-white: #031b33;
+    --text-muted: #1e3a5f;              /* النص الفرعي الداكن الممتاز */
+    --text-dim: #1e3a5f;
+
+    /* ==========================================
+       5. BORDERS & SHADOWS
+       ========================================== */
+    --glass-border: rgba(2, 132, 199, 0.22);  /* الإطار الأزرق البلاتيني */
+    --border-subtle: #e2e8f0;                 /* الحدود الخفيفة الفاتحة */
+    --border-input: #cbd5e1;                  /* حدود المدخلات */
+    --shadow-card: 0 10px 30px rgba(2, 132, 199, 0.06), 0 4px 10px rgba(0, 0, 0, 0.03);
+    --shadow-hover: 0 20px 45px rgba(2, 132, 199, 0.15), 0 8px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================
+   3. THEME TOGGLE BUTTON STYLES
+   ========================================== */
+.theme-toggle-btn {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid var(--glass-border);
+    color: var(--primary-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
+    font-weight: 700;
+    user-select: none;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--primary-color);
+    color: #ffffff;
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.theme-toggle-btn:active {
+    transform: translateY(0) scale(0.94);
+}
+
+.theme-toggle-btn i {
+    font-size: 0.9rem;
+    transition: transform 0.4s ease;
+}
+
+.theme-toggle-btn:hover i {
+    transform: rotate(20deg) scale(1.15);
+}

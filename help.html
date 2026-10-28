@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ar="مركز المساعدة | ويب ميكرز" data-en="Help Center | WebMakers">مركز المساعدة | ويب ميكرز</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Admin Theme CSS -->
+    <link rel="stylesheet" href="admin-theme.min.css">
+    <style>
+        :root {
+            --primary: var(--primary-color);
+            --bg: var(--bg-dark);
+            --card: var(--bg-card-glass);
+            --text: var(--text-white);
+            --muted: var(--text-muted);
+            --transition: var(--transition);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+                padding: 20px 12px;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            margin: auto;
+            background: var(--card);
+            padding: 3.5rem 3rem;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(20px);
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .lang-wrapper {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 10;
+        }
+
+        body[dir="ltr"] .lang-wrapper {
+            left: auto;
+            right: 25px;
+        }
+
+        .lang-pill {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--glass-border);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .lang-pill:hover {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        .lang-pill:active {
+            transform: translateY(0) scale(0.94);
+        }
+
+        .lang-pill svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 12px rgba(226, 232, 240, 0.4));
+            animation: logoPulse 3s infinite ease-in-out;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(226, 232, 240, 0.3)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(226, 232, 240, 0.5)); }
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-bottom: 3rem;
+        }
+
+        .help-card {
+            background: var(--bg-card);
+            padding: 2rem 1.5rem;
+            border-radius: 18px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-card);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .help-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            background: rgba(56, 189, 248, 0.05);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .help-card i {
+            font-size: 2.4rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .help-card:hover i {
+            transform: scale(1.2) translateY(-4px);
+        }
+
+        .help-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .help-card p {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .support-box {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem 2rem;
+            border-radius: 18px;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .support-box:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .support-box h2 {
+            color: var(--text);
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        .support-box p {
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.92rem;
+        }
+
+        .btn-gold {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--primary);
+            color: #ffffff !important;
+            padding: 13px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, background 0.35s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.98rem;
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+            user-select: none;
+        }
+
+        .btn-gold i {
+            font-size: 1.15rem;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-gold:hover {
+            background: var(--primary-hover, #0369a1);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.5);
+        }
+
+        .btn-gold:hover i {
+            transform: scale(1.25) rotate(-10deg);
+        }
+
+        .btn-gold:active {
+            transform: translateY(0) scale(0.96);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .back-nav {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 1rem;
+        }
+
+        .back-link {
+            color: var(--primary);
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--glass-border);
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            user-select: none;
+        }
+
+        .back-link i {
+            font-size: 0.95rem;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .back-link:hover {
+            background: var(--primary);
+            color: #ffffff !important;
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.38);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .back-link:hover i {
+            transform: translateX(-5px) scale(1.2);
+        }
+
+        body[dir="ltr"] .back-link:hover i {
+            transform: translateX(5px) scale(1.2);
+        }
+
+        .back-link:active {
+            transform: translateY(0) scale(0.96);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2.8rem 2rem;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .support-box {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2.8rem 1.25rem 1.5rem 1.25rem;
+                border-radius: 16px;
+            }
+
+            .lang-wrapper {
+                top: 15px;
+                left: 15px;
+            }
+
+            body[dir="ltr"] .lang-wrapper {
+                left: auto;
+                right: 15px;
+            }
+
+            .lang-pill {
+                padding: 5px 12px;
+                font-size: 0.78rem;
+            }
+
+            .brand-logo {
+                width: 65px;
+                margin-bottom: 0.8rem;
+            }
+
+            h1 {
+                font-size: 1.45rem;
+            }
+
+            .subtitle {
+                font-size: 0.82rem;
+            }
+
+            .help-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 2rem;
+            }
+
+            .help-card {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .help-card i {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .support-box {
+                padding: 1.5rem 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .support-box h2 {
+                font-size: 1.2rem;
+            }
+
+            .support-box p {
+                font-size: 0.85rem;
+            }
+
+            .btn-gold {
+                padding: 10px 20px;
+                font-size: 0.88rem;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 2.5rem 0.9rem 1.2rem 0.9rem;
+            }
+
+            .brand-logo {
+                width: 55px;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="lang-wrapper" style="display: flex; align-items: center; gap: 8px;">
+            <button id="themeToggleBtn" class="theme-toggle-btn" type="button" title="تبديل الوضع">
+                <i class="fas fa-sun"></i>
+            </button>
+            <button id="langBtn" class="lang-pill">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <span>EN</span>
+            </button>
+        </div>
+
+        <header>
+            <img src="logo.png" alt="WebMakers Logo" class="brand-logo">
+            <h1 data-ar="كيف يمكننا مساعدتك؟" data-en="How can we help?">كيف يمكننا مساعدتك؟</h1>
+            <p class="subtitle" data-ar="مركز الدعم الفني المخصص لعملاء منصة ويب ميكرز التقنية" data-en="Dedicated support center for WebMakers Platform clients">مركز الدعم الفني المخصص لعملاء منصة ويب ميكرز التقنية</p>
+        </header>
+
+        <div class="help-grid">
+            <div class="help-card">
+                <i class="fas fa-key"></i>
+                <h3 data-ar="الوصول للحساب" data-en="Account Access">الوصول للحساب</h3>
+                <p data-ar="تعرف على كيفية استعادة كلمة المرور، إدارة صلاحيات المستخدمين، وتأمين حسابك الإداري."
+                   data-en="Learn how to reset your password, manage user permissions, and secure your admin account.">تعرف على كيفية استعادة كلمة المرور، إدارة صلاحيات المستخدمين، وتأمين حسابك الإداري.</p>
+            </div>
+            <div class="help-card">
+                <i class="fas fa-box-open"></i>
+                <h3 data-ar="إدارة كتالوج المنتجات" data-en="Product Catalog Management">إدارة كتالوج المنتجات</h3>
+                <p data-ar="تعديل المنتجات، رفع الصور، وتنظيم التصنيفات والأسعار الخاصة بمتجرك الإلكتروني."
+                   data-en="Editing products, uploading photos, and organizing categories for your digital store catalog.">تعديل المنتجات، رفع الصور، وتنظيم التصنيفات والأسعار الخاصة بمتجرك الإلكتروني.</p>
+            </div>
+            <div class="help-card">
+                <i class="fas fa-calendar-alt"></i>
+                <h3 data-ar="الحجوزات والمواعيد" data-en="Reservations & Appointments">الحجوزات والمواعيد</h3>
+                <p data-ar="تتبع الحجوزات الواردة، تأكيد المواعيد، وإدارة طلبات العملاء."
+                   data-en="Tracking incoming bookings, confirming appointments, and managing customer requests.">تتبع الحجوزات الواردة، تأكيد المواعيد، وإدارة طلبات العملاء.</p>
+            </div>
+        </div>
+
+        <div class="support-box">
+            <h2 data-ar="ما زلت بحاجة للمساعدة؟" data-en="Still need help?">ما زلت بحاجة للمساعدة؟</h2>
+            <p data-ar="فريقنا التقني متواجد على مدار الساعة لمساعدتك في أي استفسارات أو مشاكل تقنية."
+               data-en="Our technical team is available 24/7 to assist you with any platform issues or inquiries.">فريقنا التقني متواجد على مدار الساعة لمساعدتك في أي استفسارات أو مشاكل تقنية.</p>
+            <a href="https://wa.me/967771789031" target="_blank" rel="noopener noreferrer" class="btn-gold" data-ar="تواصل مع الدعم الفني عبر الواتساب" data-en="Contact Support via WhatsApp">
+                <i class="fab fa-whatsapp"></i> <span>تواصل مع الدعم الفني</span>
+            </a>
+        </div>
+
+        <div class="back-nav">
+            <a href="login.html" class="back-link" data-ar="العودة لتسجيل الدخول" data-en="Back to Login">
+                <i class="fas fa-arrow-right"></i> <span>العودة لتسجيل الدخول</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        Developed by WebMakers Technical Team © 2026
+    </footer>
+
+    <script>
+        const langBtn = document.getElementById('langBtn');
+
+        function updateLanguage(lang) {
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.body.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            localStorage.setItem('adminLang', lang);
+            langBtn.querySelector('span').textContent = lang === 'ar' ? 'EN' : 'AR';
+
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) {
+                    const textSpan = el.querySelector('span');
+                    if (textSpan) textSpan.textContent = text;
+                    else el.textContent = text;
+                }
+            });
+
+            // Adjust back icon direction
+            const backIcon = document.querySelector('.back-link i');
+            if (backIcon) {
+                backIcon.className = lang === 'ar' ? 'fas fa-arrow-right' : 'fas fa-arrow-left';
+            }
+        }
+
+        langBtn.addEventListener('click', () => {
+            const currentLang = document.documentElement.getAttribute('lang') || 'ar';
+            updateLanguage(currentLang === 'ar' ? 'en' : 'ar');
+        });
+
+        // Init from storage
+        const savedLang = localStorage.getItem('adminLang') || 'ar';
+        updateLanguage(savedLang);
+
+        // Theme Toggle Functionality
+        (function() {
+            const themeBtn = document.getElementById('themeToggleBtn');
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    document.body.classList.remove('light-mode');
+                    if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+                localStorage.setItem('adminTheme', theme);
+            }
+
+            const savedTheme = localStorage.getItem('adminTheme') || 'dark';
+            applyTheme(savedTheme);
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function() {
+                    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

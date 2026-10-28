@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a1a">
+    <title data-ar="الانضمام لفريق العمل والفرص الوظيفية | WebMakers" data-en="Careers & Opportunities | WebMakers Luxury Restaurant">الانضمام لفريق العمل والفرص الوظيفية | WebMakers</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=El+Messiri:wght@700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="theme.min.css">
+    <link rel="stylesheet" href="style.min.css?v=2.2">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <style>
+        .custom-page-hero {
+            padding: 140px 0 60px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.85), #050505), url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+            text-align: center;
+        }
+
+        .custom-page-hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+        }
+
+        .custom-page-hero p {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .careers-container-wrapper {
+            padding: 80px 0;
+            background: #000;
+        }
+
+        /* Benefits Grid */
+        .perks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .perk-card {
+            background: rgba(18, 18, 18, 0.8);
+            border: 1px solid rgba(var(--primary-rgb), 0.15);
+            border-radius: 25px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .perk-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.15);
+            background: rgba(25, 25, 25, 0.9);
+        }
+
+        .perk-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(var(--primary-rgb), 0.1);
+            border: 1px solid rgba(var(--primary-rgb), 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            transition: all 0.4s ease;
+        }
+
+        .perk-card:hover .perk-icon {
+            background: var(--primary-color);
+            color: #000;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .perk-card h3 {
+            color: #fff;
+            font-size: 1.3rem;
+            font-family: 'El Messiri', sans-serif;
+            margin-bottom: 12px;
+        }
+
+        .perk-card p {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Vacancies Cards */
+        .jobs-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .job-card {
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
+            border-radius: 30px;
+            padding: 35px;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+        }
+
+        .job-card-header {
+            margin-bottom: 20px;
+        }
+
+        .job-tag {
+            display: inline-block;
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
+            padding: 4px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .job-card h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            font-family: 'El Messiri', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .job-meta-info {
+            display: flex;
+            gap: 20px;
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .job-meta-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .job-desc {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        /* Application Form Section */
+        .apply-form-wrapper {
+            background: rgba(12, 12, 12, 0.95);
+            border: 1px solid rgba(var(--primary-rgb), 0.25);
+            border-radius: 35px;
+            padding: 60px 40px;
+            max-width: 850px;
+            margin: 0 auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+        }
+
+        .apply-form-wrapper h2 {
+            text-align: center;
+            color: #fff;
+            font-size: 2rem;
+            font-family: 'El Messiri', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .apply-form-wrapper p {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .apply-form-wrapper {
+                padding: 40px 20px;
+                border-radius: 25px;
+            }
+            .job-card {
+                padding: 25px;
+            }
+        }
+
+        /* Custom Luxury Dropdown UI */
+        .luxury-job-dropdown {
+            position: relative;
+            width: 100%;
+            user-select: none;
+            cursor: pointer;
+            z-index: 30;
+        }
+
+        .ljd-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            min-height: 52px;
+        }
+
+        .luxury-job-dropdown:hover .ljd-trigger,
+        .luxury-job-dropdown.open .ljd-trigger {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.2);
+            background: rgba(var(--primary-rgb), 0.05);
+        }
+
+        .ljd-selected-val {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .ljd-selected-val i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .ljd-arrow {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            transition: transform 0.4s ease;
+        }
+
+        .luxury-job-dropdown.open .ljd-arrow {
+            transform: rotate(180deg);
+        }
+
+        .ljd-options {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #0d0d0d;
+            border: 1px solid var(--primary-color);
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+            animation: fadeInDown 0.3s ease forwards;
+        }
+
+        .luxury-job-dropdown.open .ljd-options {
+            display: block;
+        }
+
+        .ljd-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: #ddd;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .ljd-option:last-child {
+            border-bottom: none;
+        }
+
+        .ljd-option i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            width: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .ljd-option:hover {
+            background: var(--primary-color);
+            color: #000;
+        }
+
+        .ljd-option:hover i {
+            color: #000;
+            transform: scale(1.2);
+        }
+
+        .ljd-option.selected {
+            background: rgba(var(--primary-rgb), 0.15);
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .phone-error-hint {
+            color: #ff5252;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            display: none;
+            font-weight: 700;
+        }
+
+        .phone-error-hint.active {
+            display: block;
+        }
+
+        .input-error {
+            border-color: #ff5252 !important;
+            box-shadow: 0 0 15px rgba(255, 82, 82, 0.3) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Masterpiece Page Preloader -->
+    <div id="pagePreloader" class="page-preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo-wrapper">
+                <img src="logo.png" alt="WebMakers Logo" class="preloader-logo">
+                <div class="preloader-glow-ring"></div>
+            </div>
+            <div class="preloader-brand">WebMakers</div>
+            <div class="preloader-text" data-ar="جاري تحضير تجربتك الملكية..." data-en="Preparing Your Royal Experience...">جاري تحضير تجربتك الملكية...</div>
+            <div class="preloader-bar-wrapper">
+                <div class="preloader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Header Section -->
+    <header role="banner">
+        <nav class="container" role="navigation" aria-label="القائمة الرئيسية للموقع">
+            <a href="index.html" class="logo" aria-label="متجر ويب ميكرز الفاخر - الرئيسية">
+                <span class="logo-text">WebMakers</span>
+                <img src="logo.png" alt="شعار متجر ويب ميكرز الفاخر" class="logo-img">
+            </a>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="index.html" role="menuitem" data-ar="الرئيسية" data-en="Home"><i class="fas fa-house" aria-hidden="true"></i> الرئيسية</a></li>
+                <li role="none"><a href="products.html" role="menuitem" data-ar="كتالوج المنتجات" data-en="Products Catalog"><i class="fas fa-box-open" aria-hidden="true"></i> كتالوج المنتجات</a></li>
+                <li role="none"><a href="about.html" role="menuitem" data-ar="قصة نجاحنا" data-en="Our Story"><i class="fas fa-circle-info" aria-hidden="true"></i> قصة نجاحنا</a></li>
+                <li role="none"><a href="contact.html" role="menuitem" data-ar="خدمة العملاء" data-en="Customer Service"><i class="fas fa-headset" aria-hidden="true"></i> خدمة العملاء</a></li>
+            </ul>
+            <div class="nav-actions-luxury" role="toolbar" aria-label="أدوات التحكم السريع">
+                <button class="site-theme-toggle" type="button" title="تبديل وضع الليل والنهار" aria-label="تبديل وضع الليل والنهار">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                </button>
+                <button class="nav-search-trigger" title="بحث / Search" aria-label="فتح نافذة البحث السريع">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </button>
+                <a href="wishlist.html" class="nav-badge-wrapper" title="المفضلة / Wishlist" aria-label="عرض قائمة المأكولات المفضلة">
+                    <i class="far fa-heart" aria-hidden="true"></i>
+                    <span class="nav-badge wishlist-count-badge hidden" aria-live="polite">0</span>
+                </a>
+                <a href="cart.html" class="nav-badge-wrapper" title="السلة / Cart" aria-label="عرض سلة المشتريات">
+                    <i class="fas fa-shopping-basket" aria-hidden="true"></i>
+                    <span class="nav-badge cart-count-badge hidden" aria-live="polite">0</span>
+                </a>
+                <button class="mobile-nav-toggle" id="mobileNavToggle" title="القائمة / Menu" aria-label="فتح القائمة الجانبية للموبايل">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+                <div class="luxury-lang-dropdown desktop-lang-dropdown" role="region" aria-label="قائمة اختيار اللغة">
+                    <div class="lld-trigger">
+                        <i class="fas fa-globe lld-globe"></i>
+                        <span class="lld-current-lang">العربية</span>
+                        <i class="fas fa-chevron-down lld-arrow"></i>
+                    </div>
+                    <div class="lld-menu">
+                        <div class="lld-item active" data-lang="ar">
+                            <span><span class="flag-icon">🇾🇪</span> العربية</span>
+                            <i class="fas fa-check lld-check"></i>
+                        </div>
+                        <div class="lld-item" data-lang="en">
+                            <span><span class="flag-icon">🇬🇧</span> English</span>
+                            <i class="fas fa-check lld-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Announcement Ticker Bar (Masterpiece Cinematic Edition) -->
+        <div class="ticker-bar">
+            <div class="ticker-content">
+                <div class="ticker-group">
+                    <div class="ticker-item" data-ar="🔥 خصم خاص 20% على جميع المنتجات الفاخرة هذا الأسبوع!" data-en="🔥 Special 20% discount on all luxury products this week!">🔥 خصم خاص 20% على جميع المنتجات الفاخرة هذا الأسبوع!</div>
+                    <div class="ticker-item" data-ar="✨ اكتشف تشكيلتنا الجديدة: التشكيلة الذهبية الفاخرة" data-en="✨ Discover our new arrival: The Golden Luxury Collection">✨ اكتشف تشكيلتنا الجديدة: التشكيلة الذهبية الفاخرة</div>
+                    <div class="ticker-item" data-ar="🚀 خدمة الشحن السريع مجاناً للطلبات الأكثر من 50$" data-en="🚀 Free express shipping for orders over $50">🚀 خدمة الشحن السريع مجاناً للطلبات الأكثر من 50$</div>
+                </div>
+                <div class="ticker-group">
+                    <div class="ticker-item" data-ar="🔥 خصم خاص 20% على جميع المنتجات الفاخرة هذا الأسبوع!" data-en="🔥 Special 20% discount on all luxury products this week!">🔥 خصم خاص 20% على جميع المنتجات الفاخرة هذا الأسبوع!</div>
+                    <div class="ticker-item" data-ar="✨ اكتشف تشكيلتنا الجديدة: التشكيلة الذهبية الفاخرة" data-en="✨ Discover our new arrival: The Golden Luxury Collection">✨ اكتشف تشكيلتنا الجديدة: التشكيلة الذهبية الفاخرة</div>
+                    <div class="ticker-item" data-ar="🚀 خدمة الشحن السريع مجاناً للطلبات الأكثر من 50$" data-en="🚀 Free express shipping for orders over $50">🚀 خدمة الشحن السريع مجاناً للطلبات الأكثر من 50$</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Hero Section -->
+    <section class="custom-page-hero">
+        <div class="container">
+            <h1 data-ar="انضم لنخبة رواد الضيافة الفاخرة" data-en="Join Our Elite Hospitality Team">انضم لنخبة رواد الضيافة الفاخرة</h1>
+            <p data-ar="اصنع مسيرتك المهنية في عالم الفخامة والطهي العالمي لدى WebMakers" data-en="Build your professional career in luxury gastronomy at WebMakers">اصنع مسيرتك المهنية في عالم الفخامة والطهي العالمي لدى WebMakers</p>
+            <div class="divider-gold" style="margin-top: 20px;"></div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="careers-container-wrapper">
+        <div class="container">
+
+            <!-- Perks -->
+            <div class="section-title reveal active">
+                <h2 data-ar="لماذا تعمل في WebMakers؟" data-en="Why Work at WebMakers?">لماذا تعمل في WebMakers؟</h2>
+            </div>
+
+            <div class="perks-grid">
+                <div class="perk-card reveal active">
+                    <div class="perk-icon"><i class="fas fa-crown"></i></div>
+                    <h3 data-ar="بيئة عمل ملكية" data-en="Royal Work Environment">بيئة عمل ملكية</h3>
+                    <p data-ar="نوفر لك مناخاً احترافياً محفزاً يرتكز على الاحترام المتبادل وتقديم أعلى معايير الجودة." data-en="We offer a motivating professional climate centered around mutual respect & high-end standards.">نوفر لك مناخاً احترافياً محفزاً يرتكز على الاحترام المتبادل وتقديم أعلى معايير الجودة.</p>
+                </div>
+                <div class="perk-card reveal active">
+                    <div class="perk-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 data-ar="تطور وصقل مهارات" data-en="Professional Growth">تطور وصقل مهارات</h3>
+                    <p data-ar="برامج تدريبية مستمرة بإشراف نخبة من الطهاة ومدراء الضيافة الدوليين لتطوير مهاراتك." data-en="Continuous training programs supervised by international chefs and hospitality leaders.">برامج تدريبية مستمرة بإشراف نخبة من الطهاة ومدراء الضيافة الدوليين لتطوير مهاراتك.</p>
+                </div>
+                <div class="perk-card reveal active">
+                    <div class="perk-icon"><i class="fas fa-gem"></i></div>
+                    <h3 data-ar="حوافز ومزايا VIP" data-en="VIP Rewards & Benefits">حوافز ومزايا VIP</h3>
+                    <p data-ar="رواتب ومكافآت مجزية تناسب خبرتك وشغفك بالتفوق والابتكار المستمر." data-en="Competitive compensation & VIP reward packages tailored to your expertise & dedication.">رواتب ومكافآت مجزية تناسب خبرتك وشغفك بالتفوق والابتكار المستمر.</p>
+                </div>
+            </div>
+
+            <!-- Open Positions -->
+            <div class="section-title reveal active">
+                <h2 data-ar="الوظائف الشاغرة حالياً" data-en="Current Open Vacancies">الوظائف الشاغرة حالياً</h2>
+            </div>
+
+            <div class="jobs-list-grid"></div>
+
+            <!-- Application Form -->
+            <div class="apply-form-wrapper reveal active" id="applySection">
+                <h2 data-ar="نموذج التقديم للوظائف" data-en="Job Application Form">نموذج التقديم للوظائف</h2>
+                <p data-ar="عبئ بياناتك وسيتم التواصل معك من قبل قسم الموارد البشرية عند مطابقة المؤهلات" data-en="Fill in your details and our HR team will contact you upon qualification matching">عبئ بياناتك وسيتم التواصل معك من قبل قسم الموارد البشرية عند مطابقة المؤهلات</p>
+
+                <form id="careerForm" novalidate>
+                    <!-- Invisible Honeypot Trap for Bot Protection -->
+                    <div style="display: none !important; opacity: 0; position: absolute; left: -9999px;" aria-hidden="true">
+                        <input type="text" name="website_hp_check" class="hp-security-check" tabindex="-1" autocomplete="off">
+                    </div>
+                    <div class="input-row-grid">
+                        <div class="premium-input-box">
+                            <label data-ar="الاسم الكامل" data-en="Full Name">الاسم الكامل</label>
+                            <input type="text" id="applicantName" placeholder="أدخل اسمك الثلاثي" data-ar="أدخل اسمك الثلاثي" data-en="Enter your full name" required>
+                        </div>
+                        <div class="premium-input-box">
+                            <label data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
+                            <input type="tel" id="applicantPhone" placeholder="+967 xxx xxx xxx" data-ar="+967 xxx xxx xxx" data-en="+967 xxx xxx xxx" required>
+                            <small id="phoneErrorHint" class="phone-error-hint" data-ar="⚠️ يرجى إدخال أرقام فقط في خانة رقم الهاتف" data-en="⚠️ Please enter numbers only in phone field">⚠️ يرجى إدخال أرقام فقط في خانة رقم الهاتف</small>
+                        </div>
+                    </div>
+
+                    <div class="input-row-grid">
+                        <div class="premium-input-box">
+                            <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                            <input type="email" id="applicantEmail" placeholder="example@domain.com" data-ar="example@domain.com" data-en="example@domain.com" required>
+                        </div>
+                        <div class="premium-input-box">
+                            <label data-ar="الوظيفة المطلوبة" data-en="Desired Position">الوظيفة المطلوبة</label>
+                            <div class="luxury-job-dropdown" id="jobLuxuryDropdown">
+                                <div class="ljd-trigger">
+                                    <span class="ljd-selected-val" id="ljdSelectedText" data-ar="-- اختر الوظيفة المناسبة --" data-en="-- Select Desired Position --">-- اختر الوظيفة المناسبة --</span>
+                                    <i class="fas fa-chevron-down ljd-arrow"></i>
+                                </div>
+                                <div class="ljd-options" id="ljdOptions"></div>
+                                <input type="hidden" id="applicantPosition" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="premium-input-box">
+                        <label data-ar="نبذة عن خبراتك وسيرتك الذاتية" data-en="Brief Experience & Resume Notes">نبذة عن خبراتك وسيرتك الذاتية</label>
+                        <textarea id="applicantNotes" rows="4" placeholder="اكتب نبذة مختصرة عن مؤهلاتك وأبرز أماكن العمل السابقة..." data-ar="اكتب نبذة مختصرة عن مؤهلاتك وأبرز أماكن العمل السابقة..." data-en="Write a brief note about your qualifications and experience..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-gold-glow" style="width: 100%; justify-content: center; padding: 18px; margin-top: 10px;" data-ar="إرسال طلب التقديم" data-en="Submit Application">
+                        <span>إرسال طلب التقديم</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <div id="careerSuccessMsg" style="display: none; text-align: center; margin-top: 30px; animation: fadeInUp 0.5s ease both;">
+                    <div style="width: 70px; height: 70px; border: 2px solid var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-check" style="color: var(--primary-color); font-size: 30px;"></i>
+                    </div>
+                    <h3 data-ar="تم استلام طلبك بنجاح!" data-en="Application Received Successfully!" style="color: #fff; margin-bottom: 10px;">تم استلام طلبك بنجاح!</h3>
+                    <p data-ar="شكراً لاهتمامك بالانضمام لعائلة WebMakers. سيقوم فريق الموارد البشرية بمراجعة ملفك والتواصل معك قريباً." data-en="Thank you for your interest in WebMakers family. Our HR team will review your profile and contact you soon." style="color: #aaa; font-size: 0.95rem;">شكراً لاهتمامك بالانضمام لعائلة WebMakers. سيقوم فريق الموارد البشرية بمراجعة ملفك والتواصل معك قريباً.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- Main Footer -->
+    <footer>
+        <div class="container">
+            <!-- Footer Top: Newsletter -->
+            <div class="footer-top-area reveal">
+                <div class="footer-about-newsletter">
+                    <a href="index.html" class="logo">
+                        <img src="logo.png" alt="Logo" class="logo-img">
+                        <span class="logo-text">WebMakers</span>
+                    </a>
+                    <p style="color: #aaa; max-width: 500px;" data-ar="نحن نؤمن بأن التسوق والمنتجات الفاخرة لغة تميز عالمية، لذا نسعى لتقديم تجربة تسوق تجمع بين الأناقة والجودة العالية في كل منتج نقدمه." data-en="We believe luxury shopping is a universal language, so we strive to offer an experience that blends elegance and high quality in every product we present.">نحن نؤمن بأن التسوق والمنتجات الفاخرة لغة تميز عالمية، لذا نسعى لتقديم تجربة تسوق تجمع بين الأناقة والجودة العالية في كل منتج نقدمه.</p>
+                </div>
+                <div class="newsletter-box">
+                    <h3 data-ar="انضم إلى قائمة الـ VIP" data-en="Join the VIP List">انضم إلى قائمة الـ VIP</h3>
+                    <p data-ar="كن أول من يعرف عن عروضنا الحصرية ومنتجاتنا الجديدة." data-en="Be the first to know about our exclusive offers and new products.">كن أول من يعرف عن عروضنا الحصرية ومنتجاتنا الجديدة.</p>
+                    <form class="newsletter-form" id="newsletterForm" novalidate>
+                        <!-- Invisible Honeypot Trap for Bot Protection -->
+                        <div style="display: none !important; opacity: 0; position: absolute; left: -9999px;" aria-hidden="true">
+                            <input type="text" name="website_hp_check" class="hp-security-check" tabindex="-1" autocomplete="off">
+                        </div>
+                        <input type="email" placeholder="بريدك الإلكتروني" data-ar="بريدك الإلكتروني" data-en="Your Email" required>
+                        <button type="submit" class="btn-subscribe" data-ar="اشترك الآن" data-en="Subscribe Now">اشترك الآن <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                    <div id="newsletterSuccess" style="display:none; color: var(--primary-color); margin-top: 15px; font-weight: bold;" data-ar="شكراً لانضمامك إلينا!" data-en="Thank you for joining us!">
+                        <i class="fas fa-check-circle"></i> شكراً لانضمامك إلينا!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Grid -->
+            <div class="footer-grid">
+                <!-- Column 1: Links -->
+                <div class="footer-col reveal">
+                    <h4 data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" data-ar="الرئيسية" data-en="Home"><i class="fas fa-house"></i> الرئيسية</a></li>
+                        <li><a href="products.html" data-ar="كتالوج المنتجات" data-en="Products Catalog"><i class="fas fa-box-open"></i> كتالوج المنتجات</a></li>
+                        <li><a href="about.html" data-ar="قصة نجاحنا" data-en="Our Success Story"><i class="fas fa-circle-info"></i> قصة نجاحنا</a></li>
+                        <li><a href="cart.html" data-ar="سلة المشتريات" data-en="Shopping Cart"><i class="fas fa-shopping-basket"></i> سلة المشتريات</a></li>
+                        <li><a href="wishlist.html" data-ar="القائمة المفضلة" data-en="Wishlist"><i class="fas fa-heart"></i> القائمة المفضلة</a></li>
+                        <li><a href="reservation.html" data-ar="احجز الآن" data-en="Book Now"><i class="fas fa-calendar-check"></i> احجز الآن</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Working Hours -->
+                <div class="footer-col reveal" style="transition-delay: 0.1s;">
+                    <h4 data-ar="ساعات العمل" data-en="Working Hours">ساعات العمل</h4>
+                    <div class="working-hours-card">
+                        <div class="hour-item">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <div class="hour-details">
+                                <span class="day" data-ar="الأحد - الخميس" data-en="Sunday - Thursday">الأحد - الخميس</span>
+                                <span class="time" data-ar="1:00 م - 1:00 ص" data-en="1:00 PM - 1:00 AM">1:00 م - 1:00 ص</span>
+                            </div>
+                        </div>
+                        <div class="hour-item">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <div class="hour-details">
+                                <span class="day" data-ar="الجمعة - السبت" data-en="Friday - Saturday">الجمعة - السبت</span>
+                                <span class="time" data-ar="2:00 م - 2:00 ص" data-en="2:00 PM - 2:00 AM">2:00 م - 2:00 ص</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-icons-v2">
+                        <a href="https://facebook.com" target="_blank" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://tiktok.com" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://wa.me/96700000000" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- Column 4: Contact -->
+                <div class="footer-col reveal" style="transition-delay: 0.2s;">
+                    <h4 data-ar="اتصل بنا" data-en="Contact Us">اتصل بنا</h4>
+                    <ul class="contact-info-list">
+                        <li>
+                            <a href="https://maps.google.com" target="_blank">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span data-ar="صنعاء، الحي السياسي، شارع بغداد" data-en="Baghdad St, Political District, Sana'a">صنعاء، الحي السياسي، شارع بغداد</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+967777777777">
+                                <i class="fa-solid fa-mobile-screen-button"></i>
+                                <span dir="ltr"><span class="country-code">+967</span> 777 777 777</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+9671444444">
+                                <i class="fa-solid fa-phone"></i>
+                                <span dir="ltr"><span class="country-code">+967</span> 1 444 444</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:vip@webmakers-ye.com">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>vip@webmakers-ye.com</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="contact.html">
+                                <i class="fas fa-paper-plane"></i>
+                                <span data-ar="خدمة العملاء" data-en="Customer Service">خدمة العملاء</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <!-- Mobile Only Column: Important Links -->
+                <div class="footer-col reveal mobile-only-important-col" style="transition-delay: 0.3s;">
+                    <h4 data-ar="روابط تهمك" data-en="Important Links">روابط تهمك</h4>
+                    <ul class="contact-info-list">
+                        <li>
+                            <a href="privacy-policy.html">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="careers.html">
+                                <i class="fa-solid fa-briefcase"></i>
+                                <span data-ar="الوظائف" data-en="Careers">الوظائف</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="faq.html">
+                                <i class="fa-solid fa-circle-question"></i>
+                                <span data-ar="الأسئلة الشائعة" data-en="FAQs">الأسئلة الشائعة</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="luxury-lang-dropdown">
+                                <div class="lld-trigger">
+                                    <i class="fas fa-globe lld-globe"></i>
+                                    <span class="lld-current-lang">العربية</span>
+                                    <i class="fas fa-chevron-down lld-arrow"></i>
+                                </div>
+                                <div class="lld-menu">
+                                    <div class="lld-item active" data-lang="ar">
+                                        <span><span class="flag-icon">🇾🇪</span> العربية</span>
+                                        <i class="fas fa-check lld-check"></i>
+                                    </div>
+                                    <div class="lld-item" data-lang="en">
+                                        <span><span class="flag-icon">🇬🇧</span> English</span>
+                                        <i class="fas fa-check lld-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="copyright-v2" data-ar="&copy; 2026 جميع الحقوق محفوظة لـ <b>WebMakers Luxury Restaurant</b>" data-en="&copy; 2026 All Rights Reserved to <b>WebMakers Luxury Restaurant</b>">
+                    &copy; 2026 جميع الحقوق محفوظة لـ <b>WebMakers Luxury Restaurant</b>
+                </div>
+
+                <!-- Desktop Bottom Links (Visible ONLY on Desktop/Laptop) -->
+                <div class="footer-bottom-links desktop-bottom-links">
+                    <div class="luxury-lang-dropdown">
+                        <div class="lld-trigger">
+                            <i class="fas fa-globe lld-globe"></i>
+                            <span class="lld-current-lang">العربية</span>
+                            <i class="fas fa-chevron-down lld-arrow"></i>
+                        </div>
+                        <div class="lld-menu">
+                            <div class="lld-item active" data-lang="ar">
+                                <span><span class="flag-icon">🇾🇪</span> العربية</span>
+                                <i class="fas fa-check lld-check"></i>
+                            </div>
+                            <div class="lld-item" data-lang="en">
+                                <span><span class="flag-icon">🇬🇧</span> English</span>
+                                <i class="fas fa-check lld-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="privacy-policy.html" data-ar="سياسة الخصوصية" data-en="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> سياسة الخصوصية</a>
+                    <a href="careers.html" data-ar="الوظائف" data-en="Careers"><i class="fa-solid fa-briefcase"></i> الوظائف</a>
+                    <a href="faq.html" data-ar="الأسئلة الشائعة" data-en="FAQs"><i class="fa-solid fa-circle-question"></i> الأسئلة الشائعة</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="main.min.js?v=2.2"></script>
+    <script>
+        // اختيار الوظيفة عند النقر على كروت الوظائف
+        function selectJob(title) {
+            const hiddenInput = document.getElementById('applicantPosition');
+            const selectedText = document.getElementById('ljdSelectedText');
+            const dropdown = document.getElementById('jobLuxuryDropdown');
+
+            if (hiddenInput && selectedText && dropdown) {
+                const options = dropdown.querySelectorAll('.ljd-option');
+                let matchFound = false;
+
+                options.forEach(opt => {
+                    const val = opt.getAttribute('data-value');
+                    opt.classList.remove('selected');
+                    if (val.toLowerCase().includes(title.toLowerCase()) || title.toLowerCase().includes(val.toLowerCase())) {
+                        opt.classList.add('selected');
+                        hiddenInput.value = val;
+                        const isAr = (localStorage.getItem('preferredLang') || 'ar') === 'ar';
+                        const text = isAr ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
+                        const icon = opt.querySelector('i')?.className || 'fas fa-briefcase';
+                        selectedText.innerHTML = `<i class="${icon}"></i> <span>${text}</span>`;
+                        matchFound = true;
+                    }
+                });
+
+                if (!matchFound && options.length > 0) {
+                    const firstOpt = options[0];
+                    firstOpt.classList.add('selected');
+                    hiddenInput.value = firstOpt.getAttribute('data-value');
+                    selectedText.innerHTML = firstOpt.innerHTML;
+                }
+
+                dropdown.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function bindLuxuryDropdownEvents() {
+            const dropdown = document.getElementById('jobLuxuryDropdown');
+            if (!dropdown) return;
+            const trigger = dropdown.querySelector('.ljd-trigger');
+            const options = dropdown.querySelectorAll('.ljd-option');
+            const hiddenInput = document.getElementById('applicantPosition');
+            const selectedText = document.getElementById('ljdSelectedText');
+            const isAr = (localStorage.getItem('preferredLang') || 'ar') === 'ar';
+
+            if (trigger) {
+                trigger.onclick = (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('open');
+                };
+            }
+
+            options.forEach(opt => {
+                opt.onclick = (e) => {
+                    e.stopPropagation();
+                    const val = opt.getAttribute('data-value');
+                    const text = isAr ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
+                    const icon = opt.querySelector('i')?.className || 'fas fa-briefcase';
+
+                    if (hiddenInput) {
+                        hiddenInput.value = val;
+                        hiddenInput.setAttribute('data-ar', opt.getAttribute('data-ar'));
+                        hiddenInput.setAttribute('data-en', opt.getAttribute('data-en'));
+                    }
+                    if (selectedText) {
+                        selectedText.setAttribute('data-ar', opt.getAttribute('data-ar'));
+                        selectedText.setAttribute('data-en', opt.getAttribute('data-en'));
+                        selectedText.innerHTML = `<i class="${icon}"></i> <span>${text}</span>`;
+                    }
+
+                    options.forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    dropdown.classList.remove('open');
+                };
+            });
+
+            document.onclick = (e) => {
+                if (dropdown && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('open');
+                }
+            };
+        }
+
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            const div = document.createElement('div');
+            div.innerText = String(text);
+            return div.innerHTML;
+        }
+
+        async function loadAndRenderStorefrontVacancies() {
+            const isAr = (localStorage.getItem('preferredLang') || 'ar') === 'ar';
+            const gridContainer = document.querySelector('.jobs-list-grid');
+            const dropdownOptionsContainer = document.getElementById('ljdOptions');
+            const applySection = document.getElementById('applySection');
+            if (!gridContainer) return;
+
+            let vacancies = [];
+            let rawLocal = [];
+            try {
+                rawLocal = JSON.parse(localStorage.getItem('local_jobs_data') || '[]');
+            } catch (e) {}
+
+            // Filter out mock dummy vacancies (VAC-101, VAC-102, VAC-103)
+            let realLocal = rawLocal.filter(v => v && !String(v.id).startsWith('VAC-10'));
+
+            // 2. Fetch from Supabase 'job_vacancies' table
+            try {
+                if (window._supabase && typeof window._supabase.from === 'function') {
+                    const { data, error } = await window._supabase
+                        .from('job_vacancies')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) {
+                        console.warn('Supabase job_vacancies select note:', error.message);
+                    }
+
+                    if (data && data.length > 0) {
+                        vacancies = data;
+                        try {
+                            localStorage.setItem('local_jobs_data', JSON.stringify(vacancies));
+                        } catch (e) {}
+                    } else if (realLocal.length > 0) {
+                        vacancies = realLocal;
+                    } else {
+                        vacancies = data || [];
+                    }
+                } else if (realLocal.length > 0) {
+                    vacancies = realLocal;
+                }
+            } catch (err) {
+                if (realLocal.length > 0) vacancies = realLocal;
+            }
+
+            // Filter active vacancies only
+            const activeVacancies = (vacancies || []).filter(v => (v.is_active === true || v.is_active === 'true' || v.is_active === 1 || v.is_active === undefined));
+
+            if (activeVacancies.length === 0) {
+                if (applySection) applySection.style.display = 'none';
+
+                gridContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 24px; background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(2,132,199,0.04) 100%); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 24px; border: 1px solid rgba(2,132,199,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(2,132,199,0.06); margin: 10px 0;">
+                        <div style="width: 70px; height: 70px; border-radius: 20px; background: linear-gradient(135deg, rgba(2,132,199,0.22) 0%, rgba(2,132,199,0.06) 100%); border: 1px solid rgba(2,132,199,0.45); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 0 25px rgba(2,132,199,0.35);">
+                            <i class="fas fa-briefcase" style="font-size: 2rem; color: #0284c7;"></i>
+                        </div>
+                        <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 10px; letter-spacing: -0.3px;">${isAr ? 'لا توجد وظائف شاغرة معلنة حالياً' : 'No Open Positions Currently'}</h3>
+                        <p style="font-size: 0.95rem; color: rgba(255,255,255,0.75); max-width: 520px; margin: 0 auto; line-height: 1.6;">${isAr ? 'نشكر اهتمامك بالانضمام لفريقنا! تابعنا باستمرار للاطلاع على الشواغر الجديدة فور الإعلان عنها.' : 'Thank you for your interest! Check back regularly for new career opportunities.'}</p>
+                        <div style="display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; padding: 8px 18px; border-radius: 30px; background: rgba(2,132,199,0.12); border: 1px solid rgba(2,132,199,0.35); color: #0284c7; font-size: 0.82rem; font-weight: 700;">
+                            <i class="fas fa-bell" style="font-size: 0.8rem; color: #0284c7;"></i>
+                            <span>${isAr ? 'سيتم إضافة فرص عمل جديدة قريباً' : 'New career opportunities opening soon'}</span>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            if (applySection) applySection.style.display = 'block';
+
+            // Render Vacancies Cards into Storefront Grid
+            gridContainer.innerHTML = activeVacancies.map(v => {
+                const titleAr = v.title_ar || v.title || (isAr ? 'وظيفة شاغرة' : 'Open Position');
+                const titleEn = v.title_en || titleAr;
+                const displayTitle = isAr ? titleAr : titleEn;
+
+                const deptAr = v.department || (isAr ? 'قسم عام' : 'General');
+                const typeLocAr = v.type_location || (isAr ? 'دوام كامل • صنعاء' : 'Full Time');
+                const descAr = v.description || (isAr ? 'لا توجد تفاصيل إضافية' : 'No extra details');
+
+                const isNew = (v.is_new === true || v.is_new === 'true' || v.is_new === 1);
+
+                return `
+                <div class="job-card reveal active" style="display: flex; flex-direction: column; justify-content: space-between; padding: 24px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(2, 132, 199, 0.25); border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+                    <div>
+                        <!-- Department & Badges Header -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+                            <span class="job-tag" style="background: rgba(2, 132, 199, 0.15); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.3); font-weight: 800; padding: 4px 12px; border-radius: 20px;">
+                                <i class="fas fa-sitemap" style="font-size: 0.75rem; margin-inline-end: 4px;"></i> ${escapeHtml(deptAr)}
+                            </span>
+                            ${isNew ? `<span class="job-tag" style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); font-weight: 800; padding: 4px 12px; border-radius: 20px;"><i class="fas fa-star" style="font-size: 0.72rem; margin-inline-end: 3px;"></i> NEW</span>` : ''}
+                        </div>
+
+                        <!-- Job Title Block -->
+                        <div style="margin-bottom: 12px;">
+                            <span style="font-size: 0.78rem; color: rgba(255,255,255,0.6); font-weight: 700; display: block; margin-bottom: 3px;">${isAr ? 'المسمى الوظيفي:' : 'Job Title:'}</span>
+                            <h3 style="font-size: 1.25rem; font-weight: 900; color: #ffffff; margin: 0; line-height: 1.4;">${escapeHtml(displayTitle)}</h3>
+                        </div>
+
+                        <!-- Type & Location Box -->
+                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(2, 132, 199, 0.08); border-radius: 12px; border: 1px solid rgba(2, 132, 199, 0.22); margin-bottom: 14px;">
+                            <i class="fas fa-clock" style="color: #0284c7; font-size: 1.1rem; flex-shrink: 0;"></i>
+                            <div>
+                                <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); font-weight: 700; display: block;">${isAr ? 'طبيعة العمل والموقع:' : 'Type & Location:'}</span>
+                                <strong style="font-size: 0.92rem; color: #0284c7; font-weight: 800;">${escapeHtml(typeLocAr)}</strong>
+                            </div>
+                        </div>
+
+                        <!-- Description Box -->
+                        <div style="margin-bottom: 20px;">
+                            <span style="font-size: 0.78rem; color: rgba(255,255,255,0.6); font-weight: 700; display: block; margin-bottom: 4px;">${isAr ? 'تفاصيل ومتطلبات الوظيفة:' : 'Requirements & Details:'}</span>
+                            <p class="job-desc" style="font-size: 0.88rem; color: rgba(255,255,255,0.88); line-height: 1.6; margin: 0; padding: 10px 14px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); max-height: 90px; overflow-y: auto; scrollbar-width: thin; word-break: break-word;">${escapeHtml(descAr)}</p>
+                        </div>
+                    </div>
+
+                    <!-- Apply Now Action Button -->
+                    <a href="#applySection" class="btn-gold-glow" style="width: 100%; padding: 14px 25px; font-size: 0.98rem; font-weight: 800; justify-content: center; border-radius: 12px; box-sizing: border-box;" onclick="selectJob('${escapeHtml(displayTitle)}')">
+                        <span>${isAr ? 'التقديم على هذه الوظيفة' : 'Apply For This Position'}</span>
+                        <i class="fas fa-paper-plane" style="margin-inline-start: 8px;"></i>
+                    </a>
+                </div>`;
+            }).join('');
+
+            // Also update the Positions Dropdown Options in the Application Form!
+            if (dropdownOptionsContainer) {
+                dropdownOptionsContainer.innerHTML = activeVacancies.map((v, idx) => {
+                    const titleAr = v.title_ar || v.title || 'وظيفة شاغرة';
+                    const titleEn = v.title_en || titleAr;
+                    const displayTitle = isAr ? titleAr : titleEn;
+                    return `
+                    <div class="ljd-option ${idx === 0 ? 'selected' : ''}" data-value="${escapeHtml(displayTitle)}" data-ar="${escapeHtml(titleAr)}" data-en="${escapeHtml(titleEn)}">
+                        <i class="fas fa-briefcase"></i> <span>${escapeHtml(displayTitle)}</span>
+                    </div>`;
+                }).join('');
+
+                const hiddenInput = document.getElementById('applicantPosition');
+                const selectedText = document.getElementById('ljdSelectedText');
+                if (hiddenInput && activeVacancies[0]) {
+                    const firstTitle = isAr ? (activeVacancies[0].title_ar || activeVacancies[0].title) : (activeVacancies[0].title_en || activeVacancies[0].title);
+                    hiddenInput.value = firstTitle;
+                    if (selectedText) selectedText.innerHTML = `<i class="fas fa-briefcase"></i> <span>${escapeHtml(firstTitle)}</span>`;
+                }
+
+                bindLuxuryDropdownEvents();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const careerForm = document.getElementById('careerForm');
+            const successMsg = document.getElementById('careerSuccessMsg');
+            const phoneInput = document.getElementById('applicantPhone');
+            const phoneHint = document.getElementById('phoneErrorHint');
+            const isAr = (localStorage.getItem('preferredLang') || 'ar') === 'ar';
+
+            bindLuxuryDropdownEvents();
+            loadAndRenderStorefrontVacancies();
+
+            // 2. الفحص الفوري والمزامن لحالة الطلب وتنبيه المرشح بالقبول/الرفض مع فتح النموذج مجدداً
+            window.resetJobApplicationForm = () => {
+                localStorage.removeItem('webm_job_application');
+                if (careerForm) {
+                    careerForm.reset();
+                    careerForm.style.display = 'block';
+                }
+                const formHeaderH2 = document.querySelector('#applySection h2');
+                const formHeaderP = document.querySelector('#applySection p');
+                if (formHeaderH2) formHeaderH2.style.display = 'block';
+                if (formHeaderP) formHeaderP.style.display = 'block';
+                if (successMsg) successMsg.style.display = 'none';
+
+                const applySec = document.getElementById('applySection');
+                if (applySec) applySec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+
+            const checkSavedApplication = async () => {
+                let savedApp = JSON.parse(localStorage.getItem('webm_job_application'));
+                if (!savedApp) return;
+
+                let appExists = false;
+
+                // Sync status from Supabase if possible
+                try {
+                    if (window._supabase && typeof window._supabase.from === 'function') {
+                        const { data } = await window._supabase
+                            .from('job_applications')
+                            .select('*')
+                            .or(`email.eq.${savedApp.email || ''},phone.eq.${savedApp.phone || ''},full_name.eq.${savedApp.name || ''}`)
+                            .order('created_at', { ascending: false })
+                            .limit(1);
+
+                        if (data && data.length > 0) {
+                            appExists = true;
+                            savedApp.status = data[0].status;
+                            localStorage.setItem('webm_job_application', JSON.stringify(savedApp));
+                        }
+                    }
+                } catch (e) {}
+
+                // Sync status from local_careers_data as well
+                try {
+                    const localCareers = JSON.parse(localStorage.getItem('local_careers_data') || '[]');
+                    const match = localCareers.find(c => String(c.full_name) === String(savedApp.name) || String(c.phone) === String(savedApp.phone));
+                    if (match) {
+                        appExists = true;
+                        if (match.status) {
+                            savedApp.status = match.status;
+                            localStorage.setItem('webm_job_application', JSON.stringify(savedApp));
+                        }
+                    }
+                } catch (e) {}
+
+                // If application was permanently DELETED by Admin from Dashboard, wipe local savedApp and open form immediately with NO notice!
+                if (!appExists) {
+                    localStorage.removeItem('webm_job_application');
+                    if (careerForm) {
+                        careerForm.reset();
+                        careerForm.style.display = 'block';
+                    }
+                    const formHeaderH2 = document.querySelector('#applySection h2');
+                    const formHeaderP = document.querySelector('#applySection p');
+                    if (formHeaderH2) formHeaderH2.style.display = 'block';
+                    if (formHeaderP) formHeaderP.style.display = 'block';
+                    if (successMsg) successMsg.style.display = 'none';
+                    return;
+                }
+
+                if (savedApp) {
+                    if (careerForm) careerForm.style.display = 'none';
+                    const formHeaderH2 = document.querySelector('#applySection h2');
+                    const formHeaderP = document.querySelector('#applySection p');
+                    if (formHeaderH2) formHeaderH2.style.display = 'none';
+                    if (formHeaderP) formHeaderP.style.display = 'none';
+
+                    if (successMsg) {
+                        successMsg.style.display = 'block';
+                        const h3 = successMsg.querySelector('h3');
+                        const p = successMsg.querySelector('p');
+                        const posTitle = isAr ? (savedApp.position_ar || savedApp.position) : (savedApp.position_en || savedApp.position);
+                        const status = savedApp.status || 'pending';
+
+                        if (status === 'accepted' || status === 'shortlisted') {
+                            if (h3) h3.innerHTML = isAr ? `🎉 تهانينا يا ${savedApp.name}! تمت الموافقة على طلبك` : `🎉 Congratulations ${savedApp.name}! Approved`;
+                            if (p) p.innerHTML = isAr ?
+                                `تم قبول طلبك لوظيفة (<strong>${posTitle}</strong>) للمقابلة الشخصية. سيتم التواصل معك قريباً لتحديد الموعد.<br><br><button type="button" class="btn-gold-glow" onclick="resetJobApplicationForm()" style="margin-top:15px; padding:10px 22px; font-size:0.9rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><span>${isAr ? 'التقديم على وظيفة أخرى' : 'Apply for another job'}</span> <i class="fas fa-plus-circle"></i></button>` :
+                                `Your application for (<strong>${posTitle}</strong>) has been shortlisted for an interview. We will contact you soon.<br><br><button type="button" class="btn-gold-glow" onclick="resetJobApplicationForm()" style="margin-top:15px; padding:10px 22px; font-size:0.9rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><span>Apply for another job</span> <i class="fas fa-plus-circle"></i></button>`;
+                        } else if (status === 'rejected') {
+                            if (h3) h3.innerHTML = isAr ? `أهلاً بك يا ${savedApp.name}` : `Welcome ${savedApp.name}`;
+                            if (p) p.innerHTML = isAr ?
+                                `نعتذر منك، لم يتم قبول طلبك لوظيفة (<strong>${posTitle}</strong>) حالياً. يمكنك التقديم على فرصة وظيفية أخرى.<br><br><button type="button" class="btn-gold-glow" onclick="resetJobApplicationForm()" style="margin-top:15px; padding:10px 22px; font-size:0.9rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><span>${isAr ? 'التقديم على وظيفة أخرى' : 'Apply for another job'}</span> <i class="fas fa-plus-circle"></i></button>` :
+                                `Your application for (<strong>${posTitle}</strong>) was not selected at this time. You can apply for other opportunities.<br><br><button type="button" class="btn-gold-glow" onclick="resetJobApplicationForm()" style="margin-top:15px; padding:10px 22px; font-size:0.9rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><span>Apply for another job</span> <i class="fas fa-plus-circle"></i></button>`;
+                        } else {
+                            const storeWhatsapp = (window.siteSettings && window.siteSettings.whatsapp_number) ? window.siteSettings.whatsapp_number : '967777777777';
+                            const cleanWa = storeWhatsapp.replace(/[^0-9]/g, '');
+                            const waMsg = encodeURIComponent(
+                                isAr
+                                    ? `مرحباً، أقوم بتأكيد إرسال طلب توظيف جديد عبر الموقع:\n👤 الاسم: ${savedApp.name}\n💼 الوظيفة المطلوبة: ${posTitle}\n📞 الهاتف: ${savedApp.phone}`
+                                    : `Hello, confirming my job application:\nName: ${savedApp.name}\nPosition: ${posTitle}\nPhone: ${savedApp.phone}`
+                            );
+                            const waUrl = `https://wa.me/${cleanWa}?text=${waMsg}`;
+
+                            if (h3) h3.innerText = isAr ? `أهلاً بك يا ${savedApp.name}` : `Welcome ${savedApp.name}`;
+                            if (p) p.innerHTML = isAr ?
+                                `تم استلام طلبك لوظيفة (<strong>${posTitle}</strong>) بتاريخ ${savedApp.date}. طلبك قيد المراجعة حالياً من قبل قسم الموارد البشرية.<br><br>` +
+                                `<a href="${waUrl}" target="_blank" class="btn-whatsapp-confirm" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; padding: 14px 28px; border-radius: 50px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #ffffff; font-weight: 800; font-size: 0.98rem; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.2);"><i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i><span>تأكيد وتوثيق الطلب عبر الواتساب</span></a>` :
+                                `Your application for (<strong>${posTitle}</strong>) submitted on ${savedApp.date} is currently under HR review.<br><br>` +
+                                `<a href="${waUrl}" target="_blank" class="btn-whatsapp-confirm" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; padding: 14px 28px; border-radius: 50px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #ffffff; font-weight: 800; font-size: 0.98rem; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.2);"><i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i><span>Confirm via WhatsApp</span></a>`;
+                        }
+                    }
+                }
+            };
+            checkSavedApplication();
+
+            // 3. الفحص الفوري لرقم الهاتف وحظر النصوص
+            if (phoneInput) {
+                phoneInput.addEventListener('input', (e) => {
+                    const originalVal = e.target.value;
+                    const cleanVal = originalVal.replace(/[^\d+ -]/g, '');
+
+                    if (originalVal !== cleanVal) {
+                        e.target.value = cleanVal;
+                        if (phoneHint) phoneHint.classList.add('active');
+                        phoneInput.classList.add('input-error');
+                        window.showToast(isAr ? '⚠️ يرجى إدخال أرقام فقط في خانة رقم الهاتف' : '⚠️ Numbers only in phone field', 'warning');
+                    } else {
+                        if (phoneHint) phoneHint.classList.remove('active');
+                        phoneInput.classList.remove('input-error');
+                    }
+                });
+
+                phoneInput.addEventListener('blur', () => {
+                    const val = phoneInput.value.trim();
+                    const digits = val.replace(/\D/g, '');
+                    if (val.length > 0 && digits.length < 7) {
+                        if (phoneHint) phoneHint.classList.add('active');
+                        phoneInput.classList.add('input-error');
+                        window.showToast(isAr ? '⚠️ رقم الهاتف غير كافٍ (يجب ألا يقل عن 7 أرقام)' : '⚠️ Phone number too short', 'warning');
+                    } else {
+                        if (phoneHint) phoneHint.classList.remove('active');
+                        phoneInput.classList.remove('input-error');
+                    }
+                });
+            }
+
+            // 4. إرسال النموذج وحفظ حالة التقديم
+            if (careerForm) {
+                careerForm.onsubmit = async (e) => {
+                    e.preventDefault();
+
+                    // Security Check (Honeypot + Cooldown)
+                    if (window.checkFormSecurity && !window.checkFormSecurity(careerForm, 'career')) return;
+
+                    const name = document.getElementById('applicantName').value.trim();
+                    if (!name) {
+                        window.showToast(isAr ? '⚠️ يرجى إدخال الاسم الكامل' : '⚠️ Please enter your full name', 'error');
+                        document.getElementById('applicantName').focus();
+                        return;
+                    }
+
+                    const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+                    const digitsOnly = phoneVal.replace(/\D/g, '');
+                    if (digitsOnly.length < 7) {
+                        window.showToast(isAr ? '⚠️ يرجى إدخال رقم هاتف صحيح يتكون من أرقام فقط' : '⚠️ Please enter a valid phone number', 'error');
+                        if (phoneInput) {
+                            phoneInput.focus();
+                            phoneInput.classList.add('input-error');
+                            if (phoneHint) phoneHint.classList.add('active');
+                        }
+                        return;
+                    }
+
+                    const email = document.getElementById('applicantEmail').value.trim();
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!email || !emailRegex.test(email)) {
+                        window.showToast(isAr ? '⚠️ يرجى إدخال عنوان بريد إلكتروني صحيح' : '⚠️ Please enter a valid email address', 'error');
+                        document.getElementById('applicantEmail').focus();
+                        return;
+                    }
+
+                    const positionVal = document.getElementById('applicantPosition').value;
+                    if (!positionVal) {
+                        window.showToast(isAr ? '⚠️ يرجى اختيار الوظيفة المطلوبة من القائمة' : '⚠️ Please select desired position', 'error');
+                        if (dropdown) dropdown.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return;
+                    }
+
+                    const notes = document.getElementById('applicantNotes').value.trim();
+                    if (!notes) {
+                        window.showToast(isAr ? '⚠️ يرجى كتابة نبذة عن خبراتك وسيرتك الذاتية' : '⚠️ Please enter brief notes on your experience', 'error');
+                        document.getElementById('applicantNotes').focus();
+                        return;
+                    }
+
+                    const btn = careerForm.querySelector('button[type="submit"]');
+                    btn.disabled = true;
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${isAr ? 'جاري إرسال الطلب...' : 'Sending...'}`;
+
+                    const localAppObj = {
+                        id: 'JOB-' + Date.now(),
+                        full_name: name,
+                        phone: phoneVal,
+                        email: email,
+                        position: positionVal,
+                        cover_letter: notes,
+                        experience_notes: notes,
+                        notes: notes,
+                        experience_years: 'جديد',
+                        resume_url: '#',
+                        status: 'pending',
+                        created_at: new Date().toISOString()
+                    };
+
+                    // 1. Save to LocalStorage 'local_careers_data' (for Dashboard instant display)
+                    try {
+                        let localCareers = JSON.parse(localStorage.getItem('local_careers_data') || '[]');
+                        localCareers.unshift(localAppObj);
+                        localStorage.setItem('local_careers_data', JSON.stringify(localCareers));
+                    } catch (e) {}
+
+                    // 2. Insert to Supabase 'job_applications' table (Compatible with int8 id & experience_notes)
+                    try {
+                        if (window._supabase && typeof window._supabase.from === 'function') {
+                            const supabaseDataObj = {
+                                tenant_id: 'webmakers_luxury_001',
+                                full_name: name,
+                                phone: phoneVal,
+                                email: email,
+                                position: positionVal,
+                                experience_notes: notes,
+                                status: 'pending',
+                                created_at: new Date().toISOString()
+                            };
+
+                            const { data, error } = await window._supabase.from('job_applications').insert([supabaseDataObj]).select();
+
+                            if (error) {
+                                console.error('Supabase job_applications table insert error:', error.message || error);
+                                window.showToast(isAr ? '⚠️ خطأ بالربط مع قاعدة البيانات: ' + (error.message || 'RLS Policy error') : '⚠️ Database insert error: ' + error.message, 'error');
+                                alert(isAr ? 'تنبيه من Supabase: ' + (error.message || 'تم رفض الإدخال بسبب سياسة RLS') : 'Supabase Error: ' + error.message);
+                                try {
+                                    await window._supabase.from('contact_messages').insert([{
+                                        tenant_id: 'webmakers_luxury_001',
+                                        name: name,
+                                        customer_name: name,
+                                        phone: phoneVal,
+                                        email: email,
+                                        subject: `[طلب وظيفة] - ${positionVal}`,
+                                        message: `الاسم الكامل: ${name}\nرقم الهاتف: ${phoneVal}\nالوظيفة المطلوبة: ${positionVal}\nالبريد الإلكتروني: ${email}\n\nالنبذة والسيرة الذاتية:\n${notes}`,
+                                        status: 'unread',
+                                        created_at: new Date().toISOString()
+                                    }]);
+                                } catch (e) {}
+                            } else if (data && data[0]) {
+                                console.log('Successfully inserted candidate into Supabase DB!', data[0]);
+                                localAppObj.id = data[0].id;
+                                try {
+                                    let localCareers = JSON.parse(localStorage.getItem('local_careers_data') || '[]');
+                                    if (localCareers[0] && localCareers[0].full_name === name) {
+                                        localCareers[0].id = data[0].id;
+                                        localStorage.setItem('local_careers_data', JSON.stringify(localCareers));
+                                    }
+                                } catch (e) {}
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('Supabase job insert error:', err);
+                    }
+
+                    // حفظ حالة التقديم محلياً لمنع إعادة الإرسال عند التحديث
+                    const applicantPosInput = document.getElementById('applicantPosition');
+                    const posAr = (applicantPosInput ? applicantPosInput.getAttribute('data-ar') : null) || positionVal;
+                    const posEn = (applicantPosInput ? applicantPosInput.getAttribute('data-en') : null) || positionVal;
+                    const savedData = {
+                        name: name,
+                        phone: phoneVal,
+                        email: email,
+                        notes: notes,
+                        cover_letter: notes,
+                        position: isAr ? posAr : posEn,
+                        position_ar: posAr,
+                        position_en: posEn,
+                        date: new Date().toLocaleDateString(isAr ? 'ar-YE' : 'en-US'),
+                        created_at: new Date().toISOString()
+                    };
+                    localStorage.setItem('webm_job_application', JSON.stringify(savedData));
+
+                    setTimeout(() => {
+                        window.showToast(isAr ? '✨ تم إرسال طلب التقديم بنجاح! سيتم مراجعته قريباً.' : '✨ Application submitted successfully!', 'success');
+                        if (careerForm) careerForm.style.display = 'none';
+                        const formHeaderH2 = document.querySelector('#applySection h2');
+                        const formHeaderP = document.querySelector('#applySection p');
+                        if (formHeaderH2) formHeaderH2.style.display = 'none';
+                        if (formHeaderP) formHeaderP.style.display = 'none';
+                        if (successMsg) {
+                            successMsg.style.display = 'block';
+                            const h3 = successMsg.querySelector('h3');
+                            const p = successMsg.querySelector('p');
+                            const displayPos = isAr ? posAr : posEn;
+
+                            const storeWhatsapp = (window.siteSettings && window.siteSettings.whatsapp_number) ? window.siteSettings.whatsapp_number : '967777777777';
+                            const cleanWa = storeWhatsapp.replace(/[^0-9]/g, '');
+                            const waMsg = encodeURIComponent(
+                                isAr
+                                    ? `مرحباً، أقوم بتأكيد إرسال طلب توظيف جديد عبر الموقع:\n👤 الاسم: ${name}\n💼 الوظيفة المطلوبة: ${displayPos}\n📞 الهاتف: ${phoneVal}`
+                                    : `Hello, confirming my job application:\nName: ${name}\nPosition: ${displayPos}\nPhone: ${phoneVal}`
+                            );
+                            const waUrl = `https://wa.me/${cleanWa}?text=${waMsg}`;
+
+                            if (h3) h3.innerText = isAr ? `أهلاً بك يا ${name}` : `Welcome ${name}`;
+                            if (p) p.innerHTML = isAr ?
+                                `تم استلام طلبك لوظيفة (<strong>${displayPos}</strong>). طلبك قيد المراجعة حالياً من قبل قسم الموارد البشرية.<br><br>` +
+                                `<a href="${waUrl}" target="_blank" class="btn-whatsapp-confirm" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; padding: 14px 28px; border-radius: 50px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #ffffff; font-weight: 800; font-size: 0.98rem; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.2);"><i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i><span>تأكيد وتوثيق الطلب عبر الواتساب</span></a>` :
+                                `Your application for (<strong>${displayPos}</strong>) is currently under HR review.<br><br>` +
+                                `<a href="${waUrl}" target="_blank" class="btn-whatsapp-confirm" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; padding: 14px 28px; border-radius: 50px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #ffffff; font-weight: 800; font-size: 0.98rem; text-decoration: none; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); transition: all 0.25s ease; border: 1px solid rgba(255,255,255,0.2);"><i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i><span>Confirm via WhatsApp</span></a>`;
+                            successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 800);
+                };
+            }
+        });
+    </script>
+</body>
+</html>

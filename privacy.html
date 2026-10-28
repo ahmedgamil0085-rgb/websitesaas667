@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ar="سياسة الخصوصية | ويب ميكرز" data-en="Privacy Policy | WebMakers">سياسة الخصوصية | ويب ميكرز</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Admin Theme Central Controller -->
+    <link rel="stylesheet" href="admin-theme.min.css">
+    <style>
+        :root {
+            --primary: var(--primary-color);
+            --bg: var(--bg-dark);
+            --card: var(--bg-card-glass);
+            --text: var(--text-white);
+            --muted: var(--text-muted);
+            --transition: var(--transition);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            padding: 3.5rem 3rem;
+            background: var(--card);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(20px);
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        /* Language Switcher */
+        .lang-wrapper {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+        }
+        body[dir="ltr"] .lang-wrapper {
+            left: auto;
+            right: 25px;
+        }
+
+        .lang-pill {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--glass-border);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .lang-pill:hover {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        .lang-pill:active {
+            transform: translateY(0) scale(0.94);
+        }
+
+        .lang-pill svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand-logo {
+            width: 70px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(226, 232, 240, 0.3));
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .last-update {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2 i {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        .back-nav {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .back-link {
+            color: var(--primary);
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--glass-border);
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            user-select: none;
+        }
+
+        .back-link i {
+            font-size: 0.95rem;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .back-link:hover {
+            background: var(--primary);
+            color: #ffffff !important;
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.38);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .back-link:hover i {
+            transform: translateX(-5px) scale(1.2);
+        }
+
+        body[dir="ltr"] .back-link:hover i {
+            transform: translateX(5px) scale(1.2);
+        }
+
+        .back-link:active {
+            transform: translateY(0) scale(0.96);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 2rem; }
+            h1 { font-size: 1.6rem; }
+            h2 { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lang-wrapper" style="display: flex; align-items: center; gap: 8px;">
+            <button id="themeToggleBtn" class="theme-toggle-btn" type="button" title="تبديل الوضع">
+                <i class="fas fa-sun"></i>
+            </button>
+            <button id="langBtn" class="lang-pill">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <span>EN</span>
+            </button>
+        </div>
+
+        <header>
+            <img src="logo.png" alt="WebMakers Logo" class="brand-logo">
+            <h1 data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</h1>
+            <p class="last-update" data-ar="خاص بمنتجات منصة ويب ميكرز التقنية - 2026" data-en="For WebMakers Technical Platform Products - 2026">خاص بمنتجات منصة ويب ميكرز التقنية - 2026</p>
+        </header>
+
+        <section>
+            <h2><i class="fas fa-info-circle"></i> <span data-ar="1. المعلومات التي نجمعها" data-en="1. Information We Collect">1. المعلومات التي نجمعها</span></h2>
+            <p data-ar="نحن نجمع المعلومات التي تزودنا بها مباشرة عند استخدامك لوحة التحكم الإدارية، مثل البيانات الشخصية عند إنشاء الحساب، تحديث كتالوج المنتجات، أو إدارة الطلبات والحجوزات الخاصة بمتجرك."
+               data-en="We collect information you provide directly to us when you use the Admin Panel, such as personal data when you create an account, update products, or manage orders and reservations for your store."></p>
+        </section>
+
+        <section>
+            <h2><i class="fas fa-user-check"></i> <span data-ar="2. كيف نستخدم معلوماتك" data-en="2. How We Use Your Information">2. كيف نستخدم معلوماتك</span></h2>
+            <p data-ar="نستخدم المعلومات التي نجمعها لتشغيل النظام، صيانته، وتوفير الميزات المتقدمة للخدمة، بالإضافة إلى التواصل معك لضمان أمان وفعالية بوابة الإدارة الخاصة بك."
+               data-en="We use the information we collect to operate, maintain, and provide the features of the Service, and to communicate with you to ensure the security and efficiency of your admin portal."></p>
+        </section>
+
+        <section>
+            <h2><i class="fas fa-shield-alt"></i> <span data-ar="3. أمن البيانات" data-en="3. Data Security">3. أمن البيانات</span></h2>
+            <p data-ar="نطبق مجموعة واسعة من التدابير الأمنية الصارمة للحفاظ على سلامة معلوماتك. يتم تشفير كافة البيانات الحساسة ونقلها عبر تقنية (SSL) الآمنة وتخزينها في قواعد بيانات محمية."
+               data-en="We implement a wide range of strict security measures to maintain the safety of your information. All sensitive data is encrypted and transmitted via secure SSL technology and stored in protected databases."></p>
+        </section>
+
+        <section>
+            <h2><i class="fas fa-headset"></i> <span data-ar="4. اتصل بنا" data-en="4. Contact Us">4. اتصل بنا</span></h2>
+            <p data-ar="إذا كانت لديك أي استفسارات تتعلق بسياسة الخصوصية هذه، يرجى التواصل مع فريق ويب ميكرز التقني مباشرة عبر مركز المساعدة."
+               data-en="If you have any questions about this Privacy Policy, please contact the WebMakers Technical Team directly through the Help Center."></p>
+        </section>
+
+        <div class="back-nav">
+            <a href="login.html" class="back-link" data-ar="العودة لتسجيل الدخول" data-en="Back to Login">
+                <i class="fas fa-arrow-right"></i> <span>العودة لتسجيل الدخول</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        Developed by WebMakers Technical Team © 2026
+    </footer>
+
+    <script>
+        const langBtn = document.getElementById('langBtn');
+
+        function updateLanguage(lang) {
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.body.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            localStorage.setItem('adminLang', lang);
+            langBtn.querySelector('span').textContent = lang === 'ar' ? 'EN' : 'AR';
+
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) {
+                    const textSpan = el.querySelector('span');
+                    if (textSpan) textSpan.textContent = text;
+                    else el.textContent = text;
+                }
+            });
+
+            // Adjust back icon for English
+            const backIcon = document.querySelector('.back-link i');
+            if (backIcon) {
+                backIcon.className = lang === 'ar' ? 'fas fa-arrow-right' : 'fas fa-arrow-left';
+            }
+        }
+
+        langBtn.addEventListener('click', () => {
+            const currentLang = document.documentElement.getAttribute('lang') || 'ar';
+            updateLanguage(currentLang === 'ar' ? 'en' : 'ar');
+        });
+
+        // Init from storage
+        const savedLang = localStorage.getItem('adminLang') || 'ar';
+        updateLanguage(savedLang);
+
+        // Theme Toggle Functionality
+        (function() {
+            const themeBtn = document.getElementById('themeToggleBtn');
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    document.body.classList.remove('light-mode');
+                    if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+                localStorage.setItem('adminTheme', theme);
+            }
+
+            const savedTheme = localStorage.getItem('adminTheme') || 'dark';
+            applyTheme(savedTheme);
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function() {
+                    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

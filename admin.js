@@ -1,0 +1,527 @@
+// Supabase Configuration
+const SUPABASE_URL = 'https://vjntfjbzjdzdqsdbwprc.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqbnRmamJ6amR6ZHFzZGJ3cHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMzQ1NTgsImV4cCI6MjEwMjkxMDU1OH0.6c2f0vRaMEacTSC-e3E1bh_b2r0hhiRQpLImED4yz9I';
+
+let adminSupabase;
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initAdmin();
+});
+
+// --- Professional Toast System ---
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    let icon = 'fa-info-circle';
+    if (type === 'success') icon = 'fa-check-circle';
+    if (type === 'error') icon = 'fa-exclamation-circle';
+
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // Remove toast after 4 seconds
+    setTimeout(() => {
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 400);
+    }, 4000);
+}
+
+async function initAdmin() {
+    // 1. Initialize Supabase Client safely
+    if (typeof supabase !== 'undefined') {
+        adminSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+        console.error("Supabase library not loaded!");
+        showToast("خطأ في الاتصال بالخادم", "error");
+        return;
+    }
+
+    // 2. Setup Event Listeners
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+
+    // Password Toggle
+    const togglePassword = document.getElementById('togglePassword');
+    if (togglePassword) {
+        togglePassword.addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // Admin Language Toggle
+    const adminLangBtn = document.getElementById('adminLangBtn');
+    if (adminLangBtn) {
+        adminLangBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const loginCard = document.querySelector('.login-card');
+            const currentLang = document.documentElement.getAttribute('lang') || 'en';
+            const newLang = currentLang === 'en' ? 'ar' : 'en';
+
+            // Start smooth transition
+            if (loginCard) loginCard.classList.add('switching');
+
+            setTimeout(() => {
+                applyAdminLanguage(newLang);
+                if (loginCard) loginCard.classList.remove('switching');
+            }, 400);
+        });
+    }
+
+    // Forgot Password Handling
+    const forgotPassBtn = document.querySelector('.forgot-pass');
+    if (forgotPassBtn) {
+        forgotPassBtn.addEventListener('click', () => {
+            const modal = document.getElementById('reset-modal');
+            const emailInput = document.getElementById('email');
+            const resetEmailInput = document.getElementById('reset-email');
+
+            // Prefill if email is already typed in login form
+            if (emailInput.value) resetEmailInput.value = emailInput.value;
+
+            modal.style.display = 'flex';
+        });
+    }
+
+    const cancelReset = document.getElementById('cancelReset');
+    if (cancelReset) {
+        cancelReset.addEventListener('click', () => {
+            document.getElementById('reset-modal').style.display = 'none';
+        });
+    }
+
+    const confirmReset = document.getElementById('confirmReset');
+    if (confirmReset) {
+        confirmReset.addEventListener('click', handleForgotPassword);
+    }
+
+    setupNavigation();
+
+    // Set initial language
+    const savedLang = localStorage.getItem('adminLang') || 'ar';
+    applyAdminLanguage(savedLang);
+
+    // 3. Enforce "Remember Me" Policy
+    await enforceRememberMePolicy();
+
+    // 4. Check for existing session
+    checkUser();
+}
+
+async function enforceRememberMePolicy() {
+    const { data: { session } } = await adminSupabase.auth.getSession();
+    if (session) {
+        const rememberMe = localStorage.getItem('admin_remember_me') === 'true';
+        const sessionActive = sessionStorage.getItem('admin_session_active') === 'true';
+
+        // If not remembered and new browser session, sign out
+        if (!rememberMe && !sessionActive) {
+            await adminSupabase.auth.signOut();
+            localStorage.removeItem('admin_remember_me');
+        }
+    }
+}
+
+// Check if user is logged in
+async function checkUser() {
+    try {
+        const { data: { session }, error } = await adminSupabase.auth.getSession();
+        if (session) {
+            showDashboard(session.user);
+        } else {
+            showLogin();
+        }
+    } catch (err) {
+        console.error("Session check error:", err);
+        showLogin();
+    }
+}
+
+// Show Dashboard View
+function showDashboard(user) {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('admin-dashboard').style.display = 'flex';
+    document.getElementById('admin-email').textContent = user.email;
+
+    // Set session as active in this browser tab context
+    sessionStorage.setItem('admin_session_active', 'true');
+
+    // Set language from local storage if exists
+    const savedLang = localStorage.getItem('adminLang') || 'ar';
+    applyAdminLanguage(savedLang);
+
+    loadDashboardStats();
+}
+
+function applyAdminLanguage(lang) {
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.body.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+    localStorage.setItem('adminLang', lang);
+
+    const langBtn = document.getElementById('adminLangBtn');
+    if (langBtn) {
+        langBtn.querySelector('span').textContent = lang === 'en' ? 'AR' : 'EN';
+    }
+
+    // Update all elements with data-ar/data-en
+    document.querySelectorAll('[data-ar]').forEach(el => {
+        const text = el.getAttribute(`data-${lang}`);
+        if (text) {
+            // Special handling for elements with nested icons or SVGs
+            if (el.id === 'login-btn' && el.disabled) return;
+
+            if (el.tagName === 'INPUT') {
+                el.placeholder = text;
+            } else {
+                // Find existing icon (i or svg)
+                const icon = el.querySelector('i') || el.querySelector('svg');
+                if (icon) {
+                    // Update only the text content, leaving the icon intact
+                    const textSpan = el.querySelector('span');
+                    if (textSpan) {
+                        textSpan.textContent = text;
+                    } else {
+                        // Fallback: update text nodes only
+                        el.childNodes.forEach(node => {
+                            if (node.nodeType === 3) node.textContent = ' ' + text;
+                        });
+                    }
+                } else {
+                    el.innerText = text;
+                }
+            }
+        }
+    });
+}
+
+// Show Login View
+function showLogin() {
+    document.getElementById('login-container').style.display = 'flex';
+    document.getElementById('admin-dashboard').style.display = 'none';
+}
+
+// --- Security: Login Lockout System ---
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 60 * 1000; // 1 minute lockout
+
+function getLockoutStatus() {
+    const attempts = parseInt(localStorage.getItem('admin_login_attempts') || '0');
+    const lockoutUntil = parseInt(localStorage.getItem('admin_lockout_until') || '0');
+    const now = Date.now();
+
+    if (lockoutUntil > now) {
+        return { locked: true, remaining: Math.ceil((lockoutUntil - now) / 1000) };
+    }
+    return { locked: false, attempts };
+}
+
+function recordFailedAttempt() {
+    let attempts = parseInt(localStorage.getItem('admin_login_attempts') || '0') + 1;
+    localStorage.setItem('admin_login_attempts', attempts);
+
+    if (attempts >= MAX_FAILED_ATTEMPTS) {
+        const lockoutUntil = Date.now() + LOCKOUT_DURATION_MS;
+        localStorage.setItem('admin_lockout_until', lockoutUntil);
+        return true; // Now locked
+    }
+    return false;
+}
+
+function resetFailedAttempts() {
+    localStorage.removeItem('admin_login_attempts');
+    localStorage.removeItem('admin_lockout_until');
+}
+
+// Handle Login
+async function handleLogin(e) {
+    e.preventDefault();
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberCheckbox = document.getElementById('remember');
+    const loginBtn = document.getElementById('login-btn');
+    const loginError = document.getElementById('login-error');
+
+    const lang = document.documentElement.getAttribute('lang') || 'ar';
+    const isAr = lang === 'ar';
+
+    // 1. Check for Security Lockout
+    const lockout = getLockoutStatus();
+    if (lockout.locked) {
+        showToast(isAr ? `تم حظر المحاولات مؤقتاً. يرجى الانتظار ${lockout.remaining} ثانية.` : `Login temporarily suspended. Please wait ${lockout.remaining} seconds.`, "error");
+        return;
+    }
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const shouldRemember = rememberCheckbox ? rememberCheckbox.checked : false;
+
+    if (!email || !password) return;
+
+    // UI Feedback
+    loginBtn.disabled = true;
+    const originalText = loginBtn.getAttribute(`data-${lang}`);
+    loginBtn.textContent = isAr ? 'جاري التحقق...' : 'Checking...';
+    loginError.textContent = '';
+
+    try {
+        const { data, error } = await adminSupabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            let userFriendlyMsg = isAr ? "حدث خطأ غير متوقع" : "An unexpected error occurred";
+
+            // Record failure for security
+            const isNowLocked = recordFailedAttempt();
+
+            // Mapping Supabase errors to friendly messages
+            if (error.message.includes("Invalid login credentials")) {
+                userFriendlyMsg = isAr ? "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التأكد والمحاولة مرة أخرى." : "Invalid email or password. Please check and try again.";
+                if (isNowLocked) {
+                    userFriendlyMsg = isAr ? "لقد استنفدت محاولات الدخول. تم تعليق حسابك لمدة دقيقة واحدة لدواعي أمنية." : "Too many failed attempts. Your access is suspended for 1 minute for security reasons.";
+                }
+            } else if (error.message.includes("Email not confirmed")) {
+                userFriendlyMsg = isAr ? "يجب تأكيد البريد الإلكتروني الخاص بك أولاً." : "Please confirm your email first.";
+            } else if (error.message.includes("Too many requests")) {
+                userFriendlyMsg = isAr ? "لقد قمت بمحاولات كثيرة خاطئة. يرجى الانتظار قليلاً." : "Too many failed attempts. Please wait a moment.";
+            } else {
+                userFriendlyMsg = isAr ? "خطأ في الدخول: " + error.message : "Login error: " + error.message;
+            }
+
+            loginError.textContent = userFriendlyMsg;
+            loginBtn.disabled = false;
+            loginBtn.textContent = originalText;
+        } else {
+            // Success! Reset security counter
+            resetFailedAttempts();
+
+            // Save Remember Me preference
+            localStorage.setItem('admin_remember_me', shouldRemember ? 'true' : 'false');
+
+            // Success Toast before redirect
+            showToast(isAr ? "تم تسجيل الدخول بنجاح! مرحباً بك." : "Login successful! Welcome back.", "success");
+
+            setTimeout(() => showDashboard(data.user), 800);
+        }
+    } catch (err) {
+        loginError.textContent = isAr ? "حدث خطأ غير متوقع." : "An unexpected error occurred.";
+        loginBtn.disabled = false;
+        loginBtn.textContent = originalText;
+    }
+}
+
+// Handle Logout
+async function handleLogout() {
+    const { error } = await adminSupabase.auth.signOut();
+    if (!error) {
+        localStorage.removeItem('admin_remember_me');
+        sessionStorage.removeItem('admin_session_active');
+        showLogin();
+    }
+}
+
+// Handle Forgot Password
+async function handleForgotPassword() {
+    const emailInput = document.getElementById('reset-email');
+    const confirmBtn = document.getElementById('confirmReset');
+    const lang = document.documentElement.getAttribute('lang') || 'ar';
+    const isAr = lang === 'ar';
+
+    const email = emailInput.value.trim();
+
+    if (!email || !email.includes('@')) {
+        showToast(isAr ? "يرجى إدخال بريد إلكتروني صحيح." : "Please enter a valid email address.", "error");
+        return;
+    }
+
+    // UI Feedback
+    const originalText = confirmBtn.textContent;
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = isAr ? "جاري الإرسال..." : "Sending...";
+
+    try {
+        const { error } = await adminSupabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.href,
+        });
+
+        if (error) {
+            let msg = isAr ? "حدث خطأ في إرسال الرابط" : "Error sending reset link";
+
+            if (error.message.includes("invalid format") || error.message.includes("validate email")) {
+                msg = isAr ? "صيغة البريد الإلكتروني غير صحيحة." : "Invalid email format.";
+            } else if (error.message.includes("rate limit") || error.message.includes("Too many requests")) {
+                msg = isAr ? "لقد أرسلنا طلباً بالفعل، يرجى الانتظار قليلاً." : "Reset link already sent, please wait.";
+            } else {
+                msg = isAr ? "خطأ: " + error.message : "Error: " + error.message;
+            }
+
+            showToast(msg, "error");
+        } else {
+            showToast(isAr ? "تم إرسال رابط استعادة كلمة المرور بنجاح." : "Success! A reset link has been sent.", "success");
+            document.getElementById('reset-modal').style.display = 'none';
+        }
+    } catch (err) {
+        showToast(isAr ? "حدث خطأ غير متوقع." : "An unexpected error occurred.", "error");
+    } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = originalText;
+    }
+}
+
+// Navigation Handling
+function setupNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = item.getAttribute('data-section');
+
+            // Update Active State
+            navItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+
+            // Update Header
+            const sectionTitle = document.getElementById('section-title');
+            sectionTitle.textContent = item.innerText.trim();
+
+            // Switch Visibility
+            switchSection(section);
+        });
+    });
+}
+
+function switchSection(sectionName) {
+    const dashboardView = document.getElementById('dashboard-view');
+    const menuView = document.getElementById('menu-view');
+    const reservationsView = document.getElementById('reservations-view');
+    const contentArea = document.getElementById('content-area');
+
+    // Hide everything
+    if(dashboardView) dashboardView.style.display = 'none';
+    if(menuView) menuView.style.display = 'none';
+    if(reservationsView) reservationsView.style.display = 'none';
+
+    // Show target or Coming Soon
+    const target = document.getElementById(`${sectionName}-view`);
+    if (target) {
+        target.style.display = 'block';
+    } else {
+        contentArea.innerHTML = `
+            <div class="coming-soon" style="text-align:center; padding: 50px;">
+                <i class="fas fa-tools" style="font-size: 3rem; color: #c5a059; margin-bottom: 20px; display: block;"></i>
+                <h2>قسم ${sectionName.toUpperCase()} قيد التطوير</h2>
+                <p>نعمل حالياً على إضافة هذه المميزات.</p>
+                <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; background:var(--primary-color); border:none; border-radius:5px; cursor:pointer;">العودة للرئيسية</button>
+            </div>
+        `;
+    }
+
+    // Load data specific to section
+    if (sectionName === 'menu') loadMenuData();
+    if (sectionName === 'reservations') loadReservationsData();
+}
+
+// Data Fetching Skeletons
+async function loadDashboardStats() {
+    console.log("Loading dashboard stats...");
+}
+
+async function loadMenuData() {
+    const menuList = document.getElementById('menu-list');
+    if(!menuList) return;
+
+    menuList.innerHTML = '<tr><td colspan="5" style="text-align:center;">جاري تحميل الأصناف...</td></tr>';
+
+    try {
+        const { data, error } = await adminSupabase.from('menu_items').select('*').limit(10);
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            let html = '';
+            data.forEach(item => {
+                html += `
+                    <tr>
+                        <td><img src="${item.image_url || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; object-fit:cover; border-radius:5px;"></td>
+                        <td>${item.name_ar}</td>
+                        <td>${item.category_id || 'عام'}</td>
+                        <td>${item.price}</td>
+                        <td>
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+            menuList.innerHTML = html;
+        } else {
+            menuList.innerHTML = '<tr><td colspan="5" style="text-align:center;">لا توجد أصناف حالياً.</td></tr>';
+        }
+    } catch (err) {
+        console.error("Load Menu Error:", err);
+        menuList.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#ff4b2b;">خطأ في تحميل البيانات.</td></tr>';
+    }
+}
+
+async function loadReservationsData() {
+    const reservationList = document.getElementById('reservation-list');
+    if(!reservationList) return;
+
+    reservationList.innerHTML = '<tr><td colspan="6" style="text-align:center;">جاري تحميل الحجوزات...</td></tr>';
+
+    try {
+        const { data, error } = await adminSupabase.from('reservations').select('*').order('created_at', { ascending: false }).limit(10);
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            let html = '';
+            data.forEach(res => {
+                html += `
+                    <tr>
+                        <td>${res.customer_name || res.user_name || 'زائر'}</td>
+                        <td>${res.reservation_date || '-'}</td>
+                        <td>${res.reservation_time || '-'}</td>
+                        <td>${res.guests_count || res.guests || 1}</td>
+                        <td><span class="status-badge" style="background: #f1c40f; color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">جديد</span></td>
+                        <td>
+                            <button class="action-btn edit-btn" title="تأكيد"><i class="fas fa-check"></i></button>
+                            <button class="action-btn delete-btn" title="إلغاء"><i class="fas fa-times"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+            reservationList.innerHTML = html;
+        } else {
+            reservationList.innerHTML = '<tr><td colspan="6" style="text-align:center;">لا توجد حجوزات حالياً.</td></tr>';
+        }
+    } catch (err) {
+        console.error("Load Reservations Error:", err);
+        reservationList.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#ff4b2b;">خطأ في تحميل البيانات.</td></tr>';
+    }
+}
+
